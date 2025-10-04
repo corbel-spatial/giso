@@ -1,0 +1,55 @@
+[workspace]
+channels = ["conda-forge"]
+platforms = ["linux-64", "osx-arm64", "win-64"]
+
+[dependencies]
+# for IDE
+pixi-pycharm = "*"
+
+[pypi-dependencies]
+giso = { path = ".", editable = true }
+
+[feature.dev.dependencies]
+# lint
+ruff = "*"
+
+[feature.dev.pypi-dependencies]
+# build
+hatchling = "*"
+# coverage
+slipcover = "*"
+
+[feature.dev.tasks]
+build = "hatchling build"
+_coverage = "slipcover --source src --json --pretty-print --out ./docs/pytest_coverage.json -m pytest"
+coverage = { cmd = "python tools/slipcover_pct_covered_display.py docs/pytest_coverage.json", depends-on = ["_coverage"] }
+lint = "ruff check ./src ./tests"
+lint-format = "ruff format ./src ./tests"
+
+[feature.test.dependencies]
+pytest = "*"
+
+[feature.py310]
+dependencies = { python = "3.10.*" }
+tasks = { test-py310 = "pytest" }
+
+[feature.py311]
+dependencies = { python = "3.11.*" }
+tasks = { test-py311 = "pytest" }
+
+[feature.py312]
+dependencies = { python = "3.12.*" }
+tasks = { test-py312 = "pytest" }
+
+[feature.py313]
+dependencies = { python = "3.13.*" }
+tasks = { test-py313 = "pytest", test = "pytest -s -k 'not update'" }
+
+[environments]
+default = []
+dev = ["dev", "test"]
+test = ["test"]
+py310 = ["py310", "test"]
+py311 = ["py311", "test"]
+py312 = ["py312", "test"]
+py313 = ["py313", "test"]

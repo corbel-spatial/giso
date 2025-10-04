@@ -1,0 +1,61 @@
+[project]
+version = "1.0.0"
+name = "giso"
+authors = [{name = "Peter Von der Porten", email = "dev@corbelspatial.com"}]
+dynamic = []
+description = "A simple command line tool to help with geocoding country/region ISO 3166-2 codes"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows :: Windows 10",
+    "Operating System :: Microsoft :: Windows :: Windows 11",
+    "Operating System :: OS Independent",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Intended Audience :: Information Technology",
+    "Topic :: Scientific/Engineering :: GIS"
+]
+requires-python = ">=3.10"
+dependencies = [
+    "apache-sedona[db]>=1.8.0,<2",
+    "click",
+    "geopandas>=1.1.0",
+    "pyarrow",
+]
+
+[project.urls]
+homepage = "https://pypi.org/project/giso/"
+repository = "https://github.com/corbel-spatial/giso"
+issues = "https://github.com/corbel-spatial/giso/issues"
+changelog = "https://github.com/corbel-spatial/giso/blob/main/CHANGELOG.md"
+
+[project.scripts]
+giso = "giso._cli:cli"
+
+[build-system]
+build-backend = "hatchling.build"
+requires = ["hatchling"]
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+    "/.github",
+    "/.idea",
+    "/.run",
+    "/docs",
+    "/tests",
+    "/tools"
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/giso"]
+
+[tool.ruff.lint]
+ignore = ["F403", "F841"]
+
