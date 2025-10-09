@@ -1,0 +1,35 @@
+# https://github.com/marketplace/actions/setup-pixi
+name: Analyze Test Coverage
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+    paths: [ "src/**" ]
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            docs/pytest_coverage.json
+            pixi.lock
+            pixi.toml
+            pyproject.toml
+            README.md
+            src
+            tests
+          sparse-checkout-cone-mode: false
+      - uses: prefix-dev/setup-pixi@v0.9.1
+        with:
+          pixi-version: v0.56.0
+          cache: true
+      - name: Run SlipCover
+        run: pixi run coverage
+      - name: Push changes
+        run: | 
+          git config --local user.email "peter@corbelspatial.com"
+          git config --local user.name "p-vdp"
+          git add ./docs/pytest_coverage.json
+          git commit -m "GitHub Action: Analyze Test Coverage"
+          git push

@@ -1,0 +1,31 @@
+# https://github.com/marketplace/actions/setup-pixi
+name: Pytest - Windows
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+    paths: [ "src/**" ]
+jobs:
+  pytest:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        environment: [ test-py310, test-py311, test-py312, test-py313, test-py314 ]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            pixi.lock
+            pixi.toml
+            pyproject.toml
+            README.md
+            src
+            tests
+          sparse-checkout-cone-mode: false
+      - uses: prefix-dev/setup-pixi@v0.9.1
+        with:
+          pixi-version: v0.56.0
+          cache: true
+          environments: default
+      - run: pixi run ${{ matrix.environment }}

@@ -3,31 +3,33 @@ channels = ["conda-forge"]
 platforms = ["linux-64", "osx-arm64", "win-64"]
 
 [dependencies]
-# for IDE
-pixi-pycharm = "*"
+python = ">=3.10,<3.15"
+geopandas = "*"
+pyarrow = "*"
+pyproj = "*"
+shapely = "*"
 
 [pypi-dependencies]
 giso = { path = ".", editable = true }
+apache-sedona = { version = ">=1.8.0", extras = ["db"]}
 
-[feature.dev.dependencies]
-# lint
-ruff = "*"
+[feature.dev]
+dependencies = { python = "3.14.*", black = "*", pandas-stubs = "*", pixi-pycharm = "*" }
 
-[feature.dev.pypi-dependencies]
-# build
-hatchling = "*"
-# coverage
-slipcover = "*"
+[feature.coverage]
+pypi-dependencies = { pytest = "*", slipcover = { git = "https://github.com/plasma-umass/slipcover", branch = "main" }}
+tasks = { coverage = "slipcover --source src --json --pretty-print --out ./docs/pytest_coverage.json -m pytest" }
 
-[feature.dev.tasks]
-build = "hatchling build"
-_coverage = "slipcover --source src --json --pretty-print --out ./docs/pytest_coverage.json -m pytest"
-coverage = { cmd = "python tools/slipcover_pct_covered_display.py docs/pytest_coverage.json", depends-on = ["_coverage"] }
-lint = "ruff check ./src ./tests"
-lint-format = "ruff format ./src ./tests"
+[feature.build]
+dependencies = { hatchling = "*" }
+tasks = { build = "hatchling build" }
 
-[feature.test.dependencies]
-pytest = "*"
+[feature.lint]
+dependencies = { black = "*", ruff = "*" }
+tasks = { lint = "black --check ./src ./tests && ruff check ./src ./tests", lint-format = "black ./src ./tests && ruff format ./src ./tests"}
+
+[feature.test]
+dependencies = { pytest = "*" }
 
 [feature.py310]
 dependencies = { python = "3.10.*" }
@@ -43,13 +45,21 @@ tasks = { test-py312 = "pytest" }
 
 [feature.py313]
 dependencies = { python = "3.13.*" }
-tasks = { test-py313 = "pytest", test = "pytest -s -k 'not update'" }
+tasks = { test-py313 = "pytest" }
+
+[feature.py314]
+dependencies = { python = "3.14.*" }
+tasks = { test = "pytest", test-py314 = "pytest" }
 
 [environments]
-default = []
-dev = ["dev", "test"]
+default = ["default"]
+dev = ["dev", "build", "test"]
+coverage = ["coverage", "test"]
+build = ["build"]
+lint = ["lint"]
 test = ["test"]
 py310 = ["py310", "test"]
 py311 = ["py311", "test"]
 py312 = ["py312", "test"]
 py313 = ["py313", "test"]
+py314 = ["py314", "test"]

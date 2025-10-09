@@ -1,0 +1,27 @@
+# https://github.com/marketplace/actions/setup-pixi
+name: Lint
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+    paths: [ "src/**" ]
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            pixi.lock
+            pixi.toml
+            pyproject.toml
+            README.md
+            src
+            tests
+          sparse-checkout-cone-mode: false
+      - uses: prefix-dev/setup-pixi@v0.9.1
+        with:
+          pixi-version: v0.56.0
+          cache: true
+      - name: Run Black and Ruff
+        run: pixi run lint
