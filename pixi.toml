@@ -24,6 +24,12 @@ tasks = { coverage = "slipcover --source src --json --pretty-print --out ./docs/
 dependencies = { hatchling = "*" }
 tasks = { build = "hatchling build" }
 
+[feature.docs]
+# dependencies should match docs/requirements.txt
+dependencies = { jupyter = "*", myst-parser = "*", nbsphinx = "*", notebook = "*", pydata-sphinx-theme = "*", sphinx = "*", sphinx-copybutton = "*" }
+tasks = { docs = "./docs/make html" }
+target = { win-64 = { tasks = { docs = "./docs/make.bat html" } } }
+
 [feature.lint]
 dependencies = { black = "*", ruff = "*" }
 tasks = { lint = "black --check ./src ./tests && ruff check ./src ./tests", lint-format = "black ./src ./tests && ruff format ./src ./tests"}
@@ -53,9 +59,10 @@ tasks = { test = "pytest", test-py314 = "pytest" }
 
 [environments]
 default = ["default"]
-dev = ["dev", "build", "test"]
+dev = ["dev", "build", "docs", "test"]
 coverage = ["coverage", "test"]
 build = ["build"]
+docs = ["docs"]
 lint = ["lint"]
 test = ["test"]
 py310 = ["py310", "test"]

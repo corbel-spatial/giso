@@ -1,0 +1,7 @@
+jupyter
+myst-parser
+nbsphinx
+notebook
+pydata-sphinx-theme
+sphinx
+sphinx-copybutton

@@ -1,0 +1,105 @@
+import os
+import sys
+
+
+sys.path.insert(0, os.path.abspath(os.path.join("..", "src")))
+
+# -- Project information -----------------------------------------------------
+
+project = "giso"
+copyright = "2025"
+author = "Peter Von der Porten"
+
+
+# -- General configuration ---------------------------------------------------
+
+extensions = [
+    "sphinx.ext.autosectionlabel",
+    "sphinx.ext.duration",
+    "sphinx.ext.doctest",
+    "sphinx.ext.autodoc",
+    "sphinx.ext.autosummary",
+    "sphinx.ext.intersphinx",
+    "sphinx_copybutton",
+    "myst_parser",
+    "nbsphinx",
+    "IPython.sphinxext.ipython_console_highlighting",
+]
+
+intersphinx_mapping = {
+    # "geojson": ("https://geojson.readthedocs.io/en/latest/", None),
+    # "geopandas": ("https://geopandas.org/en/stable/", None),
+    # "pandas": (
+    #     "https://pandas.pydata.org/pandas-docs/version/2.3/",
+    #     None,
+    # ),
+    # "pyarrow": ("https://pyarrow.readthedocs.io/en/latest/", None),
+    # "pyproj": ("https://pyproj4.github.io/pyproj/stable/", None),
+    # "python": ("https://docs.python.org/3/", None),
+    # "rasterio": ("https://rasterio.readthedocs.io/en/stable/", None),
+    "rtd": ("https://docs.readthedocs.io/en/stable/", None),
+    "sphinx": ("https://www.sphinx-doc.org/en/master/", None),
+    # "shapely": ("https://shapely.readthedocs.io/en/stable/", None),
+}
+
+intersphinx_disabled_domains = ["std"]
+
+templates_path = ["_templates"]
+
+html_title = "giso: geocoding for ISO 3166-2"
+
+html_theme_options = {
+    # "style_external_links": True,
+    "show_nav_level": 2,
+    "navigation_depth": 2,
+    "show_toc_level": 2,
+    "icon_links": [
+        {
+            "name": "GitHub",
+            "url": "https://github.com/corbel-spatial/giso",
+            "icon": "fa-brands fa-square-github",
+            "type": "fontawesome",
+        },
+        {
+            "name": "PyPI",
+            "url": "https://pypi.org/project/giso/",
+            "icon": "fa-brands fa-python",
+            "type": "fontawesome",
+        }
+    ]
+}
+
+html_sidebars = {
+    "**": [
+        # "globaltoc.html",
+    ]
+}
+
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", "**.ipynb_checkpoints"]
+
+# -- Options for HTML output -------------------------------------------------
+
+html_theme = "pydata_sphinx_theme"
+# html_theme = "sphinx_rtd_theme"
+
+html_static_path = ["_static"]
+
+nbsphinx_prolog = """
+.. raw:: html
+
+    <style>
+        div.rendered_html thead th {
+            text-align: left;
+        }
+        
+        div.rendered_html td {
+            white-space: nowrap;      
+            text-align: left;  
+        }
+        
+        .table {
+            width: 80%;
+            margin-top: 50px;
+        }
+    </style>
+"""
