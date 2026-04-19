@@ -11,13 +11,13 @@ shapely = "*"
 
 [pypi-dependencies]
 giso = { path = ".", editable = true }
-apache-sedona = { version = ">=1.8.0", extras = ["db"]}
+apache-sedona = { version = ">=1.8.1,<2", extras = ["db"] }
 
 [feature.dev]
 dependencies = { python = "3.14.*", black = "*", pandas-stubs = "*", pixi-pycharm = "*" }
 
 [feature.coverage]
-pypi-dependencies = { pytest = "*", slipcover = { git = "https://github.com/plasma-umass/slipcover", branch = "main" }}
+pypi-dependencies = { pytest = "*", slipcover = { git = "https://github.com/plasma-umass/slipcover", branch = "main" } }
 tasks = { coverage = "slipcover --source src --json --pretty-print --out ./docs/pytest_coverage.json -m pytest" }
 
 [feature.build]
@@ -32,7 +32,7 @@ target = { win-64 = { tasks = { docs = "./docs/make.bat html" } } }
 
 [feature.lint]
 dependencies = { black = "*", ruff = "*" }
-tasks = { lint = "black --check ./src ./tests && ruff check ./src ./tests", lint-format = "black ./src ./tests && ruff format ./src ./tests"}
+tasks = { lint = "black --check ./src ./tests && ruff check ./src ./tests", lint-format = "black ./src ./tests && ruff format ./src ./tests" }
 
 [feature.test]
 dependencies = { pytest = "*" }

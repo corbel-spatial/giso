@@ -18,5 +18,23 @@ jobs:
           sparse-checkout-cone-mode: false
       - run: |
           docker run --name tester --rm -id --mount type=bind,source=./,target=/root/checkout ghcr.io/corbel-spatial/here-be-dragons:next
-          docker exec -w /root/checkout tester uv pip install --system . pytest
-          docker exec -w /root/checkout tester pytest
+          docker exec -w /root/checkout tester bash -c '
+          apt update
+          apt install -y libabsl-dev
+          uv pip install --system maturin pytest
+          uv venv --system-site-packages
+          source .venv/bin/activate
+          git clone --depth 1 https://github.com/apache/sedona-db.git
+          cd sedona-db
+          git submodule init
+          git submodule update --recursive
+          python submodules/download-assets.py
+          cd python/sedonadb
+          maturin develop --release
+          pip install --root-user-action ignore .
+          cd /root
+          git clone --depth 1 https://github.com/corbel-spatial/giso.git
+          cd giso
+          pip install --root-user-action ignore .
+          pytest ./tests
+          '
