@@ -3,6 +3,22 @@
   <component name="JsonSchemaMappingsProjectConfiguration">
     <state>
       <map>
+        <entry key="pixi.toml">
+          <value>
+            <SchemaInfo>
+              <option name="name" value="pixi.toml" />
+              <option name="relativePathToSchema" value="https://raw.githubusercontent.com/prefix-dev/pixi/main/schema/schema.json" />
+              <option name="applicationDefined" value="true" />
+              <option name="patterns">
+                <list>
+                  <Item>
+                    <option name="path" value=".github/pixi.toml" />
+                  </Item>
+                </list>
+              </option>
+            </SchemaInfo>
+          </value>
+        </entry>
         <entry key="pyproject">
           <value>
             <SchemaInfo>

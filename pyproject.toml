@@ -24,10 +24,10 @@ classifiers = [
 ]
 requires-python = ">=3.10"
 dependencies = [
-    "apache-sedona[db]>=1.8.0,<2",
-    "click",
-    "geopandas>=1.1.0",
-    "pyarrow",
+    "geoarrow-pyarrow",
+    "geopandas>=1,<2",
+    "rich-click",
+    "sedonadb>=0.3,<1",
 ]
 
 [project.urls]
@@ -58,4 +58,3 @@ packages = ["src/giso"]
 
 [tool.ruff.lint]
 ignore = ["F403", "F841"]
-
