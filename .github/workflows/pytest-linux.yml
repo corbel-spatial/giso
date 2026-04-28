@@ -19,6 +19,7 @@ jobs:
             .github/pixi.lock
             .github/pixi.toml
             pyproject.toml
+            README.md
             src
             tests
           sparse-checkout-cone-mode: false
