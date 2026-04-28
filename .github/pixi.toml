@@ -11,9 +11,6 @@ geopandas = ">=1.1.0"
 rich-click = "*"
 #sedonadb = ">=0.3.0"  # TODO wait for geopandas fix on Python 3.10
 
-[tasks]
-test = "pytest ../tests"
-
 [pypi-dependencies]
 giso = { path = "..", editable = false }
 
