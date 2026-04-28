@@ -1,4 +1,4 @@
-import click
+import rich_click as click
 
 
 @click.command(
@@ -9,7 +9,7 @@ import click
 @click.option(
     "--update", help="Re-download the lookup dataset before querying it.", is_flag=True
 )
-def cli(args, update):
+def cli(args, update) -> None:
     # noinspection PyUnresolvedReferences
     """
     A simple command line tool to help with geocoding country/region ISO 3166-2 codes.

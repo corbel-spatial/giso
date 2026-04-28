@@ -1,32 +1,36 @@
 # https://github.com/marketplace/actions/setup-pixi
 name: Pytest - macOS
 on:
-  workflow_dispatch:
-  push:
-    branches: [ "main" ]
-    paths: [ "src/**" ]
+    workflow_dispatch:
+    push:
+        branches: ["main"]
+        paths: ["src/**"]
 jobs:
-  pytest:
-    runs-on: macos-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        environment: [ test-py310, test-py311, test-py312, test-py313, test-py314 ]
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          sparse-checkout: |
-            pixi.lock
-            pixi.toml
-            pyproject.toml
-            README.md
-            src
-            tests
-          sparse-checkout-cone-mode: false
-      - run: brew install proj
-      - uses: prefix-dev/setup-pixi@v0.9.1
-        with:
-          pixi-version: v0.56.0
-          cache: true
-          environments: default
-      - run: pixi run ${{ matrix.environment }}
+    pytest:
+        runs-on: macos-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                environment: [py310, py311, py312, py313, py314]
+        steps:
+            - uses: actions/checkout@v6
+              with:
+                  sparse-checkout: |
+                      .github/pixi.lock
+                      .github/pixi.toml
+                      pyproject.toml
+                      README.md
+                      src
+                      tests
+                  sparse-checkout-cone-mode: false
+            - run: brew install proj
+            - uses: prefix-dev/setup-pixi@v0.9.4
+              with:
+                  pixi-version: v0.67.2
+                  cache: true
+                  environments: ${{ matrix.environment }}
+                  manifest-path: .github/pixi.toml
+                  activate-environment: true
+                  locked: false
+                  frozen: true
+            - run: pytest tests

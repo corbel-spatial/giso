@@ -2,14 +2,14 @@
 name: Analyze Test Coverage
 on:
   workflow_dispatch:
-  push:
-    branches: [ "main" ]
-    paths: [ "src/**" ]
+#  push:
+#    branches: [ "main" ]
+#    paths: [ "src/**" ]
 jobs:
   coverage:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           sparse-checkout: |
             docs/pytest_coverage.json
@@ -20,15 +20,15 @@ jobs:
             src
             tests
           sparse-checkout-cone-mode: false
-      - uses: prefix-dev/setup-pixi@v0.9.1
+      - uses: prefix-dev/setup-pixi@v0.9.4
         with:
-          pixi-version: v0.56.0
+          pixi-version: v0.67.2
           cache: true
-      - name: Run SlipCover
+      - name: Run coverage
         run: pixi run coverage
       - name: Push changes
         run: | 
-          git config --local user.email "peter@corbelspatial.com"
+          git config --local user.email "dev@corbelspatial.com"
           git config --local user.name "p-vdp"
           git add ./docs/pytest_coverage.json
           git commit -m "GitHub Action: Analyze Test Coverage"

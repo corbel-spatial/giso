@@ -1,18 +1,19 @@
 import os
 
 import geopandas as gpd
-import sedona.db
+import sedonadb
 import shapely
-
+from pyogrio.errors import DataSourceError
+from sedonadb import dataframe as sdf
 
 _DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 _DATA_FILE = os.path.join(_DATA_DIR, "ne_10m_admin_1_states_provinces.parquet")
 _DATA_URL = "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_admin_1_states_provinces.geojson"
 
-__all__ = ["Giso", "clear", "geocode", "reverse_geocode", "update"]
+__all__ = ["Giso", "geocode", "reverse_geocode", "update"]
 
 
-def clear():
+def _clear() -> None:
     """Clears the data directory and file.
 
     This function removes the data directory and its contents.
@@ -38,7 +39,7 @@ class Giso:
     ):
         self._data_file = data_file
         self._data_url = data_url
-        self._sd: sedona.db.context.SedonaContext = sedona.db.connect()
+        self._sd: sedonadb.context.SedonaContext = sedonadb.connect()
 
         if autoupdate:
             self.update()
@@ -58,7 +59,7 @@ class Giso:
         returns it as a GeoJSON feature. If no data is found, it prints a
         message to the console and returns None.
         """
-        queried: sedona.db.dataframe.DataFrame = self._sd.sql(
+        queried: sdf.DataFrame = self._sd.sql(
             f"SELECT geometry FROM subdivisions WHERE iso_3166_2 = '{iso_3166_2}'"
         )
         queried: gpd.GeoDataFrame = queried.to_pandas()
@@ -80,15 +81,13 @@ class Giso:
         query_pt = self._sd.create_data_frame(query_pt)
         query_pt.to_view("query_pt")
 
-        queried: sedona.db.dataframe.DataFrame = self._sd.sql(
-            """
+        queried: sdf.DataFrame = self._sd.sql("""
             SELECT
                 subdivisions.iso_3166_2 as iso_3166_2,
                 subdivisions.geometry as geometry
             FROM subdivisions
                      JOIN query_pt ON ST_Intersects(subdivisions.geometry, query_pt.geometry)
-            """
-        )
+            """)
         queried: gpd.GeoDataFrame = queried.to_pandas()
         self._sd.drop_view("query_pt")
 
@@ -122,7 +121,11 @@ class Giso:
             os.mkdir(data_dir)
 
         print(f"Downloading {self._data_url} to {self._data_file}")
-        gdf = gpd.read_file(self._data_url)
+        try:
+            gdf = gpd.read_file(self._data_url)
+        except DataSourceError:
+            raise FileNotFoundError(self._data_url)
+
         gdf.to_parquet(self._data_file, compression="brotli")
 
         try:

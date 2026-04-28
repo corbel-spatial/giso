@@ -1,36 +1,41 @@
 import os
+from pathlib import Path
 
 import pytest
 import shapely
 
 import giso
-from giso._core import Giso  # noqa
+from giso import Giso
 
 
-data_url = os.path.abspath("./tests/data/ne_10m_admin_1_states_provinces.geojson")
+data_url = (
+    Path(__file__).parent / "data" / "ne_10m_admin_1_states_provinces.geojson"
+).as_posix()
 
 
 @pytest.fixture
-def g():
+def g() -> Giso:
     g = Giso(data_url=data_url)
     return g
 
 
-def test_init():
+def test_init() -> None:
     g = Giso(data_url=data_url, autoupdate=True)
+    assert isinstance(g, Giso)
     g = Giso(data_url=data_url, autoupdate=False)
+    assert isinstance(g, Giso)
 
 
-def test_update(g):
+def test_update(g: Giso) -> None:
     g.update()
-    giso.clear()
+    giso._core._clear()
     os.rmdir(os.path.dirname(g._data_file))
     g.update()
     g.update()
     g.update(overwrite=True)
 
 
-def test_geocode(g):
+def test_geocode(g: Giso) -> None:
     assert isinstance(g.geocode("US-CA"), shapely.MultiPolygon)
     assert isinstance(giso.geocode("US-CA"), shapely.MultiPolygon)
     assert isinstance(g.geocode("US-PR"), shapely.MultiPolygon)
@@ -43,7 +48,7 @@ def test_geocode(g):
     assert giso.geocode("") is None
 
 
-def test_reverse_geocode(g):
+def test_reverse_geocode(g: Giso) -> None:
     assert g.reverse_geocode(-122.2483823, 37.8245529) == "US-CA"
     assert giso.reverse_geocode(-122.2483823, 37.8245529) == "US-CA"
     assert g.reverse_geocode(-66.5830656, 18.2698972) == "US-PR"

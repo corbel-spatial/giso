@@ -65,8 +65,8 @@ html_theme_options = {
             "url": "https://pypi.org/project/giso/",
             "icon": "fa-brands fa-python",
             "type": "fontawesome",
-        }
-    ]
+        },
+    ],
 }
 
 html_sidebars = {

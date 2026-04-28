@@ -1,5 +1,5 @@
 [project]
-version = "1.0.0"
+version = "1.0.1"
 name = "giso"
 authors = [{name = "Peter Von der Porten", email = "dev@corbelspatial.com"}]
 dynamic = []
@@ -24,10 +24,10 @@ classifiers = [
 ]
 requires-python = ">=3.10"
 dependencies = [
-    "apache-sedona[db]>=1.8.0,<2",
-    "click",
-    "geopandas>=1.1.0",
-    "pyarrow",
+    "geoarrow-pyarrow",
+    "geopandas>=1,<2",
+    "rich-click",
+    "sedonadb>=0.3,<1",
 ]
 
 [project.urls]
@@ -56,6 +56,5 @@ exclude = [
 [tool.hatch.build.targets.wheel]
 packages = ["src/giso"]
 
-[tool.ruff.lint]
-ignore = ["F403", "F841"]
-
+[tool.coverage.json]
+pretty_print = true
