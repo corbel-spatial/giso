@@ -59,4 +59,4 @@ packages = ["src/giso"]
 [tool.ruff.lint]
 ignore = ["F403", "F841"]
 
-[tool.pixi]
+[tool.pixi.workspace]

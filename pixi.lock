@@ -7261,7 +7261,7 @@ packages:
 - pypi: ./
   name: giso
   version: 1.0.0
-  sha256: cbe20598d14ea09e7706f37d9bc8a2c3d7b39b2546510276ca87f5673318c829
+  sha256: b7ba6274a13eec2904ddb97d3400e348139b6ec7cc43ec62057f467d6aed4a3a
   requires_dist:
   - geoarrow-pyarrow
   - geopandas>=1,<2
