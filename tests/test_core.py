@@ -5,10 +5,12 @@ import pytest
 import shapely
 
 import giso
-from giso._core import Giso  # noqa
+from giso import Giso
 
 
-data_url = (Path(__file__).parent / "data" / "ne_10m_admin_1_states_provinces.geojson").as_posix()
+data_url = (
+    Path(__file__).parent / "data" / "ne_10m_admin_1_states_provinces.geojson"
+).as_posix()
 
 
 @pytest.fixture
@@ -17,14 +19,16 @@ def g() -> Giso:
     return g
 
 
-def test_init()->None:
-    _ = Giso(data_url=data_url, autoupdate=True)
-    _ = Giso(data_url=data_url, autoupdate=False)
+def test_init() -> None:
+    g = Giso(data_url=data_url, autoupdate=True)
+    assert isinstance(g, Giso)
+    g = Giso(data_url=data_url, autoupdate=False)
+    assert isinstance(g, Giso)
 
 
 def test_update(g: Giso) -> None:
     g.update()
-    giso.clear()
+    giso._core._clear()
     os.rmdir(os.path.dirname(g._data_file))
     g.update()
     g.update()

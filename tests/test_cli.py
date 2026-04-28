@@ -8,11 +8,11 @@ cli: click.Command
 
 
 @pytest.fixture
-def cli_runner():
+def cli_runner() -> CliRunner:
     return CliRunner()
 
 
-def test_help(cli_runner):
+def test_help(cli_runner: CliRunner) -> None:
     result = cli_runner.invoke(cli, ["--help"])
     assert result.exit_code == 0
     assert "Usage:" in result.output
@@ -26,7 +26,7 @@ def test_help(cli_runner):
     assert "Usage:" in result.output
 
 
-def test_geocode(cli_runner):
+def test_geocode(cli_runner: CliRunner) -> None:
     result = cli_runner.invoke(cli, "US-CA")
     assert result.exit_code == 0
     assert "POLYGON" in result.output
@@ -36,7 +36,7 @@ def test_geocode(cli_runner):
     assert "POLYGON" not in result.output
 
 
-def test_reverse_geocode(cli_runner):
+def test_reverse_geocode(cli_runner: CliRunner) -> None:
     result = cli_runner.invoke(cli, "-122.2483823, 37.8245529")
     assert result.exit_code == 0
     assert "US-CA" in result.output
@@ -78,5 +78,6 @@ def test_reverse_geocode(cli_runner):
     assert "Invalid" in result.output
 
 
-def test_update(cli_runner):
+def test_update(cli_runner: CliRunner) -> None:
     result = cli_runner.invoke(cli, "--update")
+    assert result.exit_code == 0

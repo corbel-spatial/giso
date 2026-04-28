@@ -56,5 +56,5 @@ exclude = [
 [tool.hatch.build.targets.wheel]
 packages = ["src/giso"]
 
-[tool.ruff.lint]
-ignore = ["F403", "F841"]
+[tool.coverage.json]
+pretty_print = true

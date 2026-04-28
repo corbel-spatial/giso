@@ -1569,7 +1569,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/rich-click-1.9.7-pyh8f84b5b_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/scikit-learn-1.8.0-np2py311heeb2b4f_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/scipy-1.17.1-py311h556693a_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/osx-64/sedonadb-0.3.0-py311h8d13676_3.conda
+      - conda: https://conda.anaconda.org/conda-forge/osx-64/sedonadb-0.3.0-py311h8d13676_4.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/setuptools-82.0.1-pyh332efcf_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/shapely-2.1.2-py311hda9c9d0_2.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/six-1.17.0-pyhe01879c_1.conda
@@ -1765,7 +1765,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/rich-click-1.9.7-pyha7b4d00_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/scikit-learn-1.8.0-np2py311hd01f973_1.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/scipy-1.17.1-py311h9c22a71_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/win-64/sedonadb-0.3.0-py311h1112a6c_3.conda
+      - conda: https://conda.anaconda.org/conda-forge/win-64/sedonadb-0.3.0-py311h1112a6c_4.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/setuptools-82.0.1-pyh332efcf_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/shapely-2.1.2-py311h362461e_2.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/six-1.17.0-pyhe01879c_1.conda
@@ -2192,7 +2192,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/rich-click-1.9.7-pyh8f84b5b_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/scikit-learn-1.8.0-np2py312h47bbdc5_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/scipy-1.17.1-py312h6309490_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/osx-64/sedonadb-0.3.0-py312hb13705f_3.conda
+      - conda: https://conda.anaconda.org/conda-forge/osx-64/sedonadb-0.3.0-py312hb13705f_4.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/setuptools-82.0.1-pyh332efcf_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/shapely-2.1.2-py312hd8edc82_2.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/six-1.17.0-pyhe01879c_1.conda
@@ -2388,7 +2388,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/rich-click-1.9.7-pyha7b4d00_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/scikit-learn-1.8.0-np2py312hea30aaf_1.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/scipy-1.17.1-py312h9b3c559_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/win-64/sedonadb-0.3.0-py312h811455b_3.conda
+      - conda: https://conda.anaconda.org/conda-forge/win-64/sedonadb-0.3.0-py312h811455b_4.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/setuptools-82.0.1-pyh332efcf_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/shapely-2.1.2-py312h37f46ab_2.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/six-1.17.0-pyhe01879c_1.conda
@@ -2815,7 +2815,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/rich-click-1.9.7-pyh8f84b5b_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/scikit-learn-1.8.0-np2py313he2891f2_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/scipy-1.17.1-py313h9cbb6b6_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/osx-64/sedonadb-0.3.0-py313h2c83f16_3.conda
+      - conda: https://conda.anaconda.org/conda-forge/osx-64/sedonadb-0.3.0-py313h2c83f16_4.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/setuptools-82.0.1-pyh332efcf_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/shapely-2.1.2-py313h210a477_2.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/six-1.17.0-pyhe01879c_1.conda
@@ -3011,7 +3011,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/rich-click-1.9.7-pyha7b4d00_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/scikit-learn-1.8.0-np2py313h4ce4a18_1.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/scipy-1.17.1-py313he51e9a2_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/win-64/sedonadb-0.3.0-py313h13bf9ad_3.conda
+      - conda: https://conda.anaconda.org/conda-forge/win-64/sedonadb-0.3.0-py313h13bf9ad_4.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/setuptools-82.0.1-pyh332efcf_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/shapely-2.1.2-py313h64ccc5a_2.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/six-1.17.0-pyhe01879c_1.conda
@@ -3438,7 +3438,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/rich-click-1.9.7-pyh8f84b5b_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/scikit-learn-1.8.0-np2py314he40e093_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/scipy-1.17.1-py314h5727af0_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/osx-64/sedonadb-0.3.0-py314h1ecef97_3.conda
+      - conda: https://conda.anaconda.org/conda-forge/osx-64/sedonadb-0.3.0-py314h1ecef97_4.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/setuptools-82.0.1-pyh332efcf_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/shapely-2.1.2-py314h4eeafd1_2.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/six-1.17.0-pyhe01879c_1.conda
@@ -3635,7 +3635,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/rich-click-1.9.7-pyha7b4d00_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/scikit-learn-1.8.0-np2py314h1b5b07a_1.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/scipy-1.17.1-py314h221f224_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/win-64/sedonadb-0.3.0-py314hfc1d766_3.conda
+      - conda: https://conda.anaconda.org/conda-forge/win-64/sedonadb-0.3.0-py314hfc1d766_4.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/setuptools-82.0.1-pyh332efcf_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/shapely-2.1.2-py314h76f3c27_2.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/six-1.17.0-pyhe01879c_1.conda
@@ -6443,7 +6443,7 @@ packages:
 - pypi: ..
   name: giso
   version: 1.0.0
-  sha256: cbe20598d14ea09e7706f37d9bc8a2c3d7b39b2546510276ca87f5673318c829
+  sha256: dbd618f02efcf47f73b910419a15542af3859adc3a84984f4c6119c9d32356d5
   requires_dist:
   - geoarrow-pyarrow
   - geopandas>=1,<2
@@ -16585,9 +16585,9 @@ packages:
   - pkg:pypi/sedonadb?source=compressed-mapping
   size: 29711741
   timestamp: 1777336364002
-- conda: https://conda.anaconda.org/conda-forge/osx-64/sedonadb-0.3.0-py311h8d13676_3.conda
-  sha256: 46a9fe81c11fe50817758a91711f0ba90b63bfbc1f4a3ee8197ed6700d18f866
-  md5: c4a7eba7c44e0de81ee3ca8cac340f7b
+- conda: https://conda.anaconda.org/conda-forge/osx-64/sedonadb-0.3.0-py311h8d13676_4.conda
+  sha256: b3ef5b7669be4aa8ce954139ffa7be5842fbdcc97855a7973a31a8b59a7b8df0
+  md5: 628da12c67ce58d73c46f9f04372b54b
   depends:
   - __osx >=11.0
   - apache-sedona
@@ -16599,12 +16599,12 @@ packages:
   - __osx >=10.13
   license: Apache-2.0
   purls:
-  - pkg:pypi/sedonadb?source=hash-mapping
-  size: 27468232
-  timestamp: 1777315661453
-- conda: https://conda.anaconda.org/conda-forge/osx-64/sedonadb-0.3.0-py312hb13705f_3.conda
-  sha256: e3e8bad03cd66ad7fdbc7ebdd99b9f1baddfa575ce18b11a352d6f8e3ff80f13
-  md5: 943e6f4e82c78c42e33cc939af640ff4
+  - pkg:pypi/sedonadb?source=compressed-mapping
+  size: 27474270
+  timestamp: 1777337360069
+- conda: https://conda.anaconda.org/conda-forge/osx-64/sedonadb-0.3.0-py312hb13705f_4.conda
+  sha256: 9aed4b529b3e4a630753c74f7715eac16ba866c0b9479264e09aeab8b4802509
+  md5: f6c52e8957181f8e688d12b5c9fd2ade
   depends:
   - __osx >=11.0
   - apache-sedona
@@ -16616,12 +16616,12 @@ packages:
   - __osx >=10.13
   license: Apache-2.0
   purls:
-  - pkg:pypi/sedonadb?source=hash-mapping
-  size: 27465416
-  timestamp: 1777314890916
-- conda: https://conda.anaconda.org/conda-forge/osx-64/sedonadb-0.3.0-py313h2c83f16_3.conda
-  sha256: 362c3efd26342257e86ff7ccc01f0b7a940a8223014722943c286b202e6693b0
-  md5: 8074ec661e13a2c9be23b66d3c7138e3
+  - pkg:pypi/sedonadb?source=compressed-mapping
+  size: 27461236
+  timestamp: 1777338181937
+- conda: https://conda.anaconda.org/conda-forge/osx-64/sedonadb-0.3.0-py313h2c83f16_4.conda
+  sha256: 86f2302fbb66fe640b14ea42f8e8f48dc12db5e386c77e7b13cbd782ad3f9089
+  md5: 141cc555427678cbb06106a5ba9ddb4d
   depends:
   - __osx >=11.0
   - apache-sedona
@@ -16633,12 +16633,12 @@ packages:
   - __osx >=10.13
   license: Apache-2.0
   purls:
-  - pkg:pypi/sedonadb?source=hash-mapping
-  size: 27470649
-  timestamp: 1777314370609
-- conda: https://conda.anaconda.org/conda-forge/osx-64/sedonadb-0.3.0-py314h1ecef97_3.conda
-  sha256: 039efbad608c64bb98a97c114f7b1a6db9c4625340ad87ce04b36f5a3d0a835b
-  md5: cd832ac7efbbd63507a54bed447f4727
+  - pkg:pypi/sedonadb?source=compressed-mapping
+  size: 27484471
+  timestamp: 1777340390981
+- conda: https://conda.anaconda.org/conda-forge/osx-64/sedonadb-0.3.0-py314h1ecef97_4.conda
+  sha256: 3a501315eb92cc68db9fe75f8110b170f8484eabfa23ef5075059f6578b65174
+  md5: 37f7ba7a1783f13d9759b89c552b142b
   depends:
   - __osx >=11.0
   - apache-sedona
@@ -16650,12 +16650,12 @@ packages:
   - __osx >=10.13
   license: Apache-2.0
   purls:
-  - pkg:pypi/sedonadb?source=hash-mapping
-  size: 27456337
-  timestamp: 1777314433431
-- conda: https://conda.anaconda.org/conda-forge/win-64/sedonadb-0.3.0-py311h1112a6c_3.conda
-  sha256: 85d2cb001da43bac30a48cc1ed070eabf2cfe8e18392a31f0321a19d82b4bf0c
-  md5: ed0cab77881a69bee85b43a564687fdb
+  - pkg:pypi/sedonadb?source=compressed-mapping
+  size: 27440632
+  timestamp: 1777338493591
+- conda: https://conda.anaconda.org/conda-forge/win-64/sedonadb-0.3.0-py311h1112a6c_4.conda
+  sha256: 139e1d6f247b25371d7b69b32eea863307f04679ca9801321bb3186f40380b5f
+  md5: a6341c7fc87b577a2d967b195f1f7047
   depends:
   - apache-sedona
   - geos >=3.14.1,<3.14.2.0a0
@@ -16666,12 +16666,12 @@ packages:
   - vc14_runtime >=14.44.35208
   license: Apache-2.0
   purls:
-  - pkg:pypi/sedonadb?source=hash-mapping
-  size: 26313361
-  timestamp: 1777315925346
-- conda: https://conda.anaconda.org/conda-forge/win-64/sedonadb-0.3.0-py312h811455b_3.conda
-  sha256: 3d404c5536e0242ec5a846c91100db6d314382dcbe3bcd941133d380d7c96a41
-  md5: 885127035f2e3cf98d7ab0be9fa4e3ef
+  - pkg:pypi/sedonadb?source=compressed-mapping
+  size: 26308524
+  timestamp: 1777339073395
+- conda: https://conda.anaconda.org/conda-forge/win-64/sedonadb-0.3.0-py312h811455b_4.conda
+  sha256: a454f6a3accf3969ff0e0048ce7c31d90319903aff0c4fd6f2f0404ff1af94db
+  md5: 6bd56273f95f48d1b0c13845dc97617b
   depends:
   - apache-sedona
   - geos >=3.14.1,<3.14.2.0a0
@@ -16682,12 +16682,12 @@ packages:
   - vc14_runtime >=14.44.35208
   license: Apache-2.0
   purls:
-  - pkg:pypi/sedonadb?source=hash-mapping
-  size: 26319640
-  timestamp: 1777315826366
-- conda: https://conda.anaconda.org/conda-forge/win-64/sedonadb-0.3.0-py313h13bf9ad_3.conda
-  sha256: 6ca8ba90aad09005f9acb4729dfc74228704a79a1d13a63c7540f32c18be7ec1
-  md5: 75f627ce182627e5014f3efa5c6efdd6
+  - pkg:pypi/sedonadb?source=compressed-mapping
+  size: 26310826
+  timestamp: 1777339152006
+- conda: https://conda.anaconda.org/conda-forge/win-64/sedonadb-0.3.0-py313h13bf9ad_4.conda
+  sha256: ab8b7f97049a8d9038f0f4756ce3c515c71ee113971778b7aee6f81ffc832f35
+  md5: 5fe594bdb1af25646e0e45b6ee6ce252
   depends:
   - apache-sedona
   - geos >=3.14.1,<3.14.2.0a0
@@ -16698,12 +16698,12 @@ packages:
   - vc14_runtime >=14.44.35208
   license: Apache-2.0
   purls:
-  - pkg:pypi/sedonadb?source=hash-mapping
-  size: 26314622
-  timestamp: 1777315808454
-- conda: https://conda.anaconda.org/conda-forge/win-64/sedonadb-0.3.0-py314hfc1d766_3.conda
-  sha256: 93ca613e647616118b2d8870cda5c891d801002420c8c72bd85e4883f05c3a2d
-  md5: 91445d4c6e06c70c88160c55403deb16
+  - pkg:pypi/sedonadb?source=compressed-mapping
+  size: 26316604
+  timestamp: 1777339057344
+- conda: https://conda.anaconda.org/conda-forge/win-64/sedonadb-0.3.0-py314hfc1d766_4.conda
+  sha256: 59e2c6ec992ee6aea39c37a1a3dd43a050aa5929eba4c1421f001d906715b9e3
+  md5: c91ee7d780ab6fec8a8578dff9fd1456
   depends:
   - apache-sedona
   - geos >=3.14.1,<3.14.2.0a0
@@ -16714,9 +16714,9 @@ packages:
   - vc14_runtime >=14.44.35208
   license: Apache-2.0
   purls:
-  - pkg:pypi/sedonadb?source=hash-mapping
-  size: 26292380
-  timestamp: 1777315861381
+  - pkg:pypi/sedonadb?source=compressed-mapping
+  size: 26298244
+  timestamp: 1777338992750
 - conda: https://conda.anaconda.org/conda-forge/noarch/setuptools-82.0.1-pyh332efcf_0.conda
   sha256: 82088a6e4daa33329a30bc26dc19a98c7c1d3f05c0f73ce9845d4eab4924e9e1
   md5: 8e194e7b992f99a5015edbd4ebd38efd
