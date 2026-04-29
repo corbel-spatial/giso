@@ -1,5 +1,5 @@
 # https://github.com/marketplace/actions/setup-pixi
-name: Lint
+name: Lint Check
 on:
   workflow_dispatch:
   push:
@@ -23,5 +23,9 @@ jobs:
         with:
           pixi-version: v0.67.2
           cache: true
+          environments: dev
+          activate-environment: true
+          locked: false
+          frozen: true
       - name: lint
         run: pixi run lint

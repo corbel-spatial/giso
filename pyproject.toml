@@ -10,11 +10,9 @@ license-files = ["LICENSE"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Operating System :: MacOS",
-    "Operating System :: Microsoft :: Windows :: Windows 10",
     "Operating System :: Microsoft :: Windows :: Windows 11",
     "Operating System :: OS Independent",
     "Operating System :: POSIX :: Linux",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
@@ -22,12 +20,12 @@ classifiers = [
     "Intended Audience :: Information Technology",
     "Topic :: Scientific/Engineering :: GIS"
 ]
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = [
-    "geoarrow-pyarrow",
-    "geopandas>=1,<2",
-    "rich-click",
-    "sedonadb>=0.3,<1",
+    "geoarrow-pyarrow>=0.2.0",
+    "geopandas>=1.0.0",
+    "rich-click>=1.9.0",
+    "sedonadb>=0.3.0",
 ]
 
 [project.urls]
@@ -50,7 +48,8 @@ exclude = [
     "/.run",
     "/docs",
     "/tests",
-    "/tools"
+    "/tools",
+	"/.readthedocs.yaml"
 ]
 
 [tool.hatch.build.targets.wheel]

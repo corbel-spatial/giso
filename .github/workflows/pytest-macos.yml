@@ -9,9 +9,9 @@ jobs:
     pytest:
         runs-on: macos-latest
         strategy:
-            fail-fast: false
+            fail-fast: true
             matrix:
-                environment: [py310, py311, py312, py313, py314]
+                environment: [py311, py312, py313, py314]
         steps:
             - uses: actions/checkout@v6
               with:

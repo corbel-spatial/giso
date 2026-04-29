@@ -1,5 +1,5 @@
 # https://github.com/marketplace/actions/setup-pixi
-name: Analyze Test Coverage
+name: Update Test Coverage
 on:
   workflow_dispatch:
 #  push:
@@ -24,6 +24,10 @@ jobs:
         with:
           pixi-version: v0.67.2
           cache: true
+          environments: dev
+          activate-environment: true
+          locked: false
+          frozen: true
       - name: Run coverage
         run: pixi run coverage
       - name: Push changes
@@ -31,5 +35,5 @@ jobs:
           git config --local user.email "dev@corbelspatial.com"
           git config --local user.name "p-vdp"
           git add ./docs/pytest_coverage.json
-          git commit -m "GitHub Action: Analyze Test Coverage"
+          git commit -m "GitHub Action: Update Test Coverage"
           git push
