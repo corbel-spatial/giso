@@ -5,9 +5,13 @@ on:
     branches: [ "main" ]
     paths: [ "src/**" ]
 jobs:
-  test-on-prerelease:
+  test-on-prerelease-python:
     runs-on: ubuntu-latest
+
+    container: ghcr.io/corbel-spatial/here-be-dragons:next
+
     steps:
+      # https://github.com/actions/checkout
       - uses: actions/checkout@v6
         with:
           sparse-checkout: |
@@ -16,28 +20,27 @@ jobs:
             src
             tests
           sparse-checkout-cone-mode: false
-      - run: |
-          docker run --name tester --rm -id --mount type=bind,source=./,target=/root/checkout ghcr.io/corbel-spatial/here-be-dragons:next
-          docker exec -w /root/checkout tester bash -c '
-               
-          # install runtime dependencies from source
+
+      - name: Install dependencies
+        run: |
           uv pip install --system \
                https://github.com/geopandas/pyogrio.git
                https://github.com/pandas-dev/pandas.git
                https://github.com/geopandas/geopandas.git
-          
-          # build and install sedonadb from source
-          uv pip install --system maturin[patchelf] pytest 
+          uv pip install --system maturin[patchelf] pytest
           uv venv --system-site-packages
+
+      - name: Build sources
+        run: |
           source .venv/bin/activate
           git clone --depth 1 https://github.com/apache/sedona-db.git
           cd sedona-db/python/sedonadb
           maturin develop --release
           deactivate
           uv pip install --system .
-          
-          # install and test giso
+
+      - name: Run tests
+        run: |
           cd /root/checkout
           uv pip install --system .
           pytest ./tests -vv -s
-          '
