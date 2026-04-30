@@ -10,8 +10,8 @@
 [![GitHub Actions Workflow Status: macOS](https://img.shields.io/github/actions/workflow/status/corbel-spatial/giso/pytest-macos.yml?label=macOS)](https://github.com/corbel-spatial/giso/actions/workflows/pytest-macos.yml)
 [![GitHub Actions Workflow Status: Lint](https://img.shields.io/github/actions/workflow/status/corbel-spatial/giso/lint.yml?label=ruff)](https://github.com/corbel-spatial/giso/actions/workflows/lint.yml)
 [![Test Coverage](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fcorbel-spatial%2Fgiso%2Frefs%2Fheads%2Fmain%2Fdocs%2Fpytest_coverage.json&query=%24.totals.percent_covered_display&label=coverage%20%25&color=brightgreen)](https://github.com/corbel-spatial/giso/actions/workflows/coverage.yml)
-[![Actions Workflow Status: Test Python Prerelease](https://img.shields.io/github/actions/workflow/status/corbel-spatial/giso/py-prerelease.yml?label=3.15-pre
-)](https://github.com/corbel-spatial/giso/actions/workflows/py-prerelease.yml)
+[![GitHub Actions Workflow Status: Test Python Prerelease](https://img.shields.io/github/actions/workflow/status/corbel-spatial/giso/pytest-linux-pre.yml?label=3.15-pre)](https://github.com/corbel-spatial/giso/actions/workflows/pytest-linux-pre.yml)
+
 # giso
 
 A simple command line tool to help with geocoding country/region [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) codes.

@@ -8,7 +8,10 @@ jobs:
   test-on-prerelease-python:
     runs-on: ubuntu-latest
 
-    container: ghcr.io/corbel-spatial/here-be-dragons:next
+    container:
+      image: ghcr.io/corbel-spatial/here-be-dragons:next
+      volumes:
+        - ./:/root/checkout
 
     steps:
       # https://github.com/actions/checkout
