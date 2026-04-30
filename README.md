@@ -1,6 +1,6 @@
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/giso)](https://pypi.org/project/giso/)
-[![PyPI Downloads](https://static.pepy.tech/badge/giso/month)](https://pepy.tech/projects/giso)
 [![PyPI - Version](https://img.shields.io/pypi/v/giso)](https://pypi.org/project/giso/)
+[![PyPI Downloads](https://static.pepy.tech/badge/giso/month)](https://pepy.tech/projects/giso)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/giso)](https://pypi.org/project/giso/)
 [![Conda - Version](https://img.shields.io/conda/vn/conda-forge/giso.svg)](https://anaconda.org/conda-forge/giso)
 [![License: MIT](https://img.shields.io/badge/License-MIT-lightgrey.svg?logo=)](https://github.com/corbel-spatial/giso/blob/main/LICENSE)
 [![Pixi](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fprefix-dev%2Fpixi%2Fmain%2Fassets%2Fbadge%2Fv0.json&label=%E2%9C%A8)](https://pixi.sh)
