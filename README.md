@@ -1,6 +1,7 @@
-[![PyPI - Version](https://img.shields.io/pypi/v/giso)](https://pypi.org/project/giso/)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/giso)](https://pypi.org/project/giso/)
 [![PyPI Downloads](https://static.pepy.tech/badge/giso/month)](https://pepy.tech/projects/giso)
+[![PyPI - Version](https://img.shields.io/pypi/v/giso)](https://pypi.org/project/giso/)
+[![Conda - Version](https://img.shields.io/conda/vn/conda-forge/giso.svg)](https://anaconda.org/conda-forge/giso)
 [![License: MIT](https://img.shields.io/badge/License-MIT-lightgrey.svg?logo=)](https://github.com/corbel-spatial/giso/blob/main/LICENSE)
 [![Pixi](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fprefix-dev%2Fpixi%2Fmain%2Fassets%2Fbadge%2Fv0.json&label=%E2%9C%A8)](https://pixi.sh)
 [![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
@@ -10,8 +11,8 @@
 [![GitHub Actions Workflow Status: macOS](https://img.shields.io/github/actions/workflow/status/corbel-spatial/giso/pytest-macos.yml?label=macOS)](https://github.com/corbel-spatial/giso/actions/workflows/pytest-macos.yml)
 [![GitHub Actions Workflow Status: Lint](https://img.shields.io/github/actions/workflow/status/corbel-spatial/giso/lint.yml?label=ruff)](https://github.com/corbel-spatial/giso/actions/workflows/lint.yml)
 [![Test Coverage](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fcorbel-spatial%2Fgiso%2Frefs%2Fheads%2Fmain%2Fdocs%2Fpytest_coverage.json&query=%24.totals.percent_covered_display&label=coverage%20%25&color=brightgreen)](https://github.com/corbel-spatial/giso/actions/workflows/coverage.yml)
-[![Actions Workflow Status: Test Python Prerelease](https://img.shields.io/github/actions/workflow/status/corbel-spatial/giso/py-prerelease.yml?label=3.15-pre
-)](https://github.com/corbel-spatial/giso/actions/workflows/py-prerelease.yml)
+[![GitHub Actions Workflow Status: Test Python Prerelease](https://img.shields.io/github/actions/workflow/status/corbel-spatial/giso/pytest-linux-pre.yml?label=3.15-pre)](https://github.com/corbel-spatial/giso/actions/workflows/pytest-linux-pre.yml)
+
 # giso
 
 A simple command line tool to help with geocoding country/region [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) codes.

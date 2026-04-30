@@ -1,18 +1,21 @@
-# https://github.com/marketplace/actions/setup-pixi
 name: Pytest - Linux
+
 on:
   workflow_dispatch:
-  push:
-    branches: [ "main" ]
-    paths: [ "src/**" ]
+  pull_request:
+    paths: [ "src/**", "tests/**" ]
+
 jobs:
   pytest:
     runs-on: ubuntu-latest
+
     strategy:
       fail-fast: true
       matrix:
         environment: [ py311, py312, py313, py314 ]
+
     steps:
+      # https://github.com/actions/checkout
       - uses: actions/checkout@v6
         with:
           sparse-checkout: |
@@ -23,6 +26,8 @@ jobs:
             src
             tests
           sparse-checkout-cone-mode: false
+
+      # https://github.com/marketplace/actions/setup-pixi
       - uses: prefix-dev/setup-pixi@v0.9.4
         with:
           pixi-version: v0.67.2
