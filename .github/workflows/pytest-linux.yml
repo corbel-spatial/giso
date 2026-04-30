@@ -1,19 +1,25 @@
-# https://github.com/marketplace/actions/setup-pixi
 name: Pytest - Linux
+
 on:
   workflow_dispatch:
-  push:
-    branches: [ "main" ]
-    paths: [ "src/**" ]
+  pull_request:
+    paths: [ "src/**", "tests/**" ]
+
+permissions:
+  contents: read
+
 jobs:
   pytest:
     runs-on: ubuntu-latest
+
     strategy:
       fail-fast: true
       matrix:
-        environment: [ py311, py312, py313, py314 ]
+        environment: [ py311, py312, py313, py314, py315 ]
+
     steps:
-      - uses: actions/checkout@v6
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v7.0.1
         with:
           sparse-checkout: |
             .github/pixi.lock
@@ -23,9 +29,11 @@ jobs:
             src
             tests
           sparse-checkout-cone-mode: false
-      - uses: prefix-dev/setup-pixi@v0.9.4
+
+      # https://github.com/marketplace/actions/setup-pixi
+      - uses: prefix-dev/setup-pixi@v0.10.2
         with:
-          pixi-version: v0.67.2
+          pixi-version: v0.81.0
           cache: true
           environments: ${{ matrix.environment }}
           manifest-path: .github/pixi.toml

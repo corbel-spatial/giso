@@ -9,7 +9,7 @@ import rich_click as click
 @click.option(
     "--update", help="Re-download the lookup dataset before querying it.", is_flag=True
 )
-def cli(args, update) -> None:
+def cli(args, update) -> str | None:
     # noinspection PyUnresolvedReferences
     """
     A simple command line tool to help with geocoding country/region ISO 3166-2 codes.
@@ -83,14 +83,14 @@ def cli(args, update) -> None:
 
         result = geocode(iso_code)
         click.echo(str(result))
-        return result
+        return str(result)
     elif x and y:
         # click.echo(f"Reverse geocoding: x={x}, y={y}")
         from ._core import reverse_geocode
 
         result = reverse_geocode(x, y)
         click.echo(str(result))
-        return result
+        return str(result)
     else:
         raise RuntimeError
 
