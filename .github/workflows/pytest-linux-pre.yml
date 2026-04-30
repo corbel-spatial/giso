@@ -1,17 +1,15 @@
 name: Test Python Prerelease
 on:
   workflow_dispatch:
-  push:
-    branches: [ "main" ]
-    paths: [ "src/**" ]
+
+permissions:
+  contents: read
+
 jobs:
   test-on-prerelease-python:
     runs-on: ubuntu-latest
 
-    container:
-      image: ghcr.io/corbel-spatial/here-be-dragons:next
-      volumes:
-        - ./:/root/checkout
+    container: ghcr.io/corbel-spatial/here-be-dragons:next
 
     steps:
       # https://github.com/actions/checkout
@@ -25,15 +23,17 @@ jobs:
           sparse-checkout-cone-mode: false
 
       - name: Install dependencies
+        shell: bash
         run: |
           uv pip install --system \
-               https://github.com/geopandas/pyogrio.git
-               https://github.com/pandas-dev/pandas.git
+               https://github.com/geopandas/pyogrio.git \
+               https://github.com/pandas-dev/pandas.git \
                https://github.com/geopandas/geopandas.git
           uv pip install --system maturin[patchelf] pytest
           uv venv --system-site-packages
 
       - name: Build sources
+        shell: bash
         run: |
           source .venv/bin/activate
           git clone --depth 1 https://github.com/apache/sedona-db.git
@@ -43,7 +43,7 @@ jobs:
           uv pip install --system .
 
       - name: Run tests
+        shell: bash
         run: |
-          cd /root/checkout
           uv pip install --system .
           pytest ./tests -vv -s
