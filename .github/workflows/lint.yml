@@ -1,15 +1,19 @@
-# https://github.com/marketplace/actions/setup-pixi
 name: Lint Check
 on:
   workflow_dispatch:
-  push:
-    branches: [ "main" ]
-    paths: [ "src/**" ]
+  pull_request:
+    paths: [ "pyproject.toml", "src/**", "tests/**" ]
+
+permissions:
+  contents: read
+
 jobs:
   lint:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v6
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v7
         with:
           sparse-checkout: |
             pixi.lock
@@ -19,9 +23,11 @@ jobs:
             src
             tests
           sparse-checkout-cone-mode: false
-      - uses: prefix-dev/setup-pixi@v0.9.4
+
+      # https://github.com/marketplace/actions/setup-pixi
+      - uses: prefix-dev/setup-pixi@v0.11.2
         with:
-          pixi-version: v0.67.2
+          pixi-version: v0.83.0
           cache: true
           environments: dev
           activate-environment: true

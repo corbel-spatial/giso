@@ -1,47 +1,148 @@
+import json
+from pathlib import Path
+from typing import IO
+
 import rich_click as click
+import shapely
+
+click.rich_click.TEXT_MARKUP = "rich"
 
 
-@click.command(
-    no_args_is_help=True,
-    context_settings={"ignore_unknown_options": True},
-)
+def _handle_result(
+    result: shapely.MultiPolygon | shapely.Polygon | dict | str | None,
+    output: IO | None = None,
+    overwrite: bool = False,
+    to_json: bool = False,
+    indent: int = 0,
+) -> None:
+    if result is None:
+        click.echo("No results")
+        return
+
+    if indent < 1:
+        out_indent = None
+    else:
+        out_indent = indent
+
+    if to_json:
+        if isinstance(result, (shapely.MultiPolygon, shapely.Polygon)):
+            result = shapely.to_geojson(result, indent=out_indent)
+        elif isinstance(result, dict):
+            result = json.dumps(result, indent=out_indent)
+        elif isinstance(result, str):
+            pass
+        else:
+            raise TypeError(result)  # pragma: no cover
+    else:
+        result = str(result)
+
+    assert isinstance(result, str), result
+
+    if output:
+        fp = Path(output.name).absolute()
+        if not overwrite and fp.exists():
+            click.echo("Output file already exists, retry with --overwrite flag")
+            return
+
+        click.echo(f"Writing output to '{fp.as_posix()}'")
+        output.write(result)
+        output.close()
+        click.echo("Done!")
+    else:
+        click.echo(result)
+
+
+@click.command(no_args_is_help=True, context_settings={"ignore_unknown_options": True})
 @click.argument("args", nargs=-1)
 @click.option(
-    "--update", help="Re-download the lookup dataset before querying it.", is_flag=True
+    "--output",
+    "-o",
+    type=click.File(mode="w", lazy=True),
+    default=None,
+    help="Save the output to a file instead of stdout.",
 )
-def cli(args, update) -> None:
-    # noinspection PyUnresolvedReferences
+@click.option(
+    "--overwrite",
+    "-w",
+    is_flag=True,
+    default=False,
+    help="Overwrite an existing output file.",
+)
+@click.option(
+    "--to-json",
+    "-j",
+    is_flag=True,
+    default=False,
+    help="Provide results in JSON format.",
+)
+@click.option(
+    "--indent",
+    "-i",
+    type=int,
+    default=0,
+    show_default=True,
+    help="Indent level for JSON output.",
+)
+@click.option(
+    "--update",
+    type=bool,
+    default=False,
+    is_flag=True,
+    hidden=True,
+    help="Re-download the lookup dataset before querying it.",
+)
+@click.option(
+    "--update-source",
+    type=str,
+    default=None,
+    hidden=True,
+    help="URL or path to a source dataset .geojson to be converted to .parquet - only use in addition to the --update flag",
+)
+@click.option(
+    "--src",
+    type=str,
+    default=None,
+    hidden=True,
+    help="URL or path to a source dataset .parquet for use in this lookup operation",
+)
+@click.version_option(package_name="giso", prog_name="giso")
+def cli(
+    args: list[str],
+    output: IO | None,
+    overwrite: bool,
+    to_json: bool,
+    indent: int,
+    update: bool,
+    update_source: str | None,
+    src: str | None,
+) -> None:
     """
     A simple command line tool to help with geocoding country/region ISO 3166-2 codes.
 
-    Uses the dataset "ne_10m_admin_1_states_provinces" from https://github.com/nvkelso/natural-earth-vector
+    \u00a0
 
     Takes one of two inputs:
 
-    1. A longitude/latitude coordinate pair. (Decimal degrees in WGS 1984 separated by a comma or a space.)
-    Returns the corresponding ISO 3166-2 code.
 
-        Example:
+    - A [bold yellow]longitude/latitude[/bold yellow] coordinate pair separated by comma or space. Returns the corresponding code, if found.
 
-        \b
-        >>> giso -122.2483823, 37.8245529
-        US-CA
+        [green]> giso -122.2483823, 37.8245529
 
-    2. A valid ISO 3166-2 code. Returns the corresponding geometry as Well-Known Text (WKT).
+        US-CA[/green]
 
-        Example:
 
-       \b
-        >>> giso US-CA
-        MULTIPOLYGON (((-114.724285 32.712836, -114.764541 32.709839, [...]
+    - A valid [bold yellow]ISO 3166-2 code[/bold yellow]. Returns the corresponding geometry as Well-Known Text (WKT).
 
+        [green]> giso US-CA
+
+        MULTIPOLYGON (((-114.724285 32.712836, -114.764541 32.709839, [...][/green]
     """
     if update:
-        from ._core import update
+        from ._core import update as _update
 
-        update(overwrite=True)
+        _update(src=src, overwrite=True, update_source=update_source)
         if len(args) == 0:
-            return None
+            return
 
     iso_code, x, y = None, None, None
     try:
@@ -75,25 +176,26 @@ def cli(args, update) -> None:
             "or a comma/space-separated longitude/latitude pair.",
             err=True,
         )
-        return None
+        return
 
     if iso_code:
         # click.echo(f"Geocoding: {iso_code}")
         from ._core import geocode
 
         result = geocode(iso_code)
-        click.echo(str(result))
-        return result
+        _handle_result(result, output, overwrite, to_json, indent)
+
+        return
+
     elif x and y:
         # click.echo(f"Reverse geocoding: x={x}, y={y}")
         from ._core import reverse_geocode
 
-        result = reverse_geocode(x, y)
-        click.echo(str(result))
-        return result
-    else:
-        raise RuntimeError
+        result = reverse_geocode(x, y, to_json)
+        _handle_result(result, output, overwrite, to_json, indent)
+
+        return
 
 
 if __name__ == "__main__":
-    cli()
+    cli()  # pragma: no cover
