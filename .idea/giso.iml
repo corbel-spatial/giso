@@ -7,7 +7,7 @@
       <excludeFolder url="file://$MODULE_DIR$/.pixi/envs/dev" />
       <excludeFolder url="file://$MODULE_DIR$/.venv" />
     </content>
-    <orderEntry type="jdk" jdkName="dev" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="dev (giso)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="TestRunnerService">
