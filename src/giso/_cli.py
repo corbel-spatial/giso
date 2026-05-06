@@ -9,12 +9,12 @@ import rich_click as click
 @click.option(
     "--update", help="Re-download the lookup dataset before querying it.", is_flag=True
 )
-def cli(args, update) -> None:
+def cli(args, update) -> str | None:
     # noinspection PyUnresolvedReferences
     """
     A simple command line tool to help with geocoding country/region ISO 3166-2 codes.
 
-    Uses the dataset "ne_10m_admin_1_states_provinces" from https://github.com/nvkelso/natural-earth-vector
+    \b
 
     Takes one of two inputs:
 
@@ -23,7 +23,6 @@ def cli(args, update) -> None:
 
         Example:
 
-        \b
         >>> giso -122.2483823, 37.8245529
         US-CA
 
@@ -31,10 +30,10 @@ def cli(args, update) -> None:
 
         Example:
 
-       \b
         >>> giso US-CA
         MULTIPOLYGON (((-114.724285 32.712836, -114.764541 32.709839, [...]
 
+    Note: giso uses the dataset "ne_10m_admin_1_states_provinces" from https://github.com/nvkelso/natural-earth-vector
     """
     if update:
         from ._core import update
@@ -81,9 +80,11 @@ def cli(args, update) -> None:
         # click.echo(f"Geocoding: {iso_code}")
         from ._core import geocode
 
+        assert isinstance(iso_code, str)
         result = geocode(iso_code)
         click.echo(str(result))
         return result
+
     elif x and y:
         # click.echo(f"Reverse geocoding: x={x}, y={y}")
         from ._core import reverse_geocode
@@ -91,9 +92,9 @@ def cli(args, update) -> None:
         result = reverse_geocode(x, y)
         click.echo(str(result))
         return result
-    else:
-        raise RuntimeError
+
+    return None
 
 
 if __name__ == "__main__":
-    cli()
+    cli([], False)

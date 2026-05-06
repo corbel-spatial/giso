@@ -1,16 +1,15 @@
 import os
 
 import geopandas as gpd
+import pandas as pd
+import rich_click as click
 import sedonadb
 import shapely
-from pyogrio.errors import DataSourceError
 from sedonadb import dataframe as sdf
 
 _DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 _DATA_FILE = os.path.join(_DATA_DIR, "ne_10m_admin_1_states_provinces.parquet")
 _DATA_URL = "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_admin_1_states_provinces.geojson"
-
-__all__ = ["Giso", "geocode", "reverse_geocode", "update"]
 
 
 def _clear() -> None:
@@ -21,7 +20,7 @@ def _clear() -> None:
     Then, it checks if the data directory exists and removes it if it does.
     """
     if os.path.exists(_DATA_FILE):
-        print(f"Removing {_DATA_FILE}")
+        click.echo(f"Removing {_DATA_FILE}")
         os.remove(_DATA_FILE)
 
 
@@ -45,7 +44,7 @@ class Giso:
             self.update()
 
         if not os.path.exists(self._data_file):
-            print("Giso object must be initialized with Giso.update()")
+            click.echo("Giso object must be initialized with Giso.update()")
         else:
             df = self._sd.read_parquet(self._data_file)
             df.to_view("subdivisions")
@@ -62,7 +61,7 @@ class Giso:
         queried: sdf.DataFrame = self._sd.sql(
             f"SELECT geometry FROM subdivisions WHERE iso_3166_2 = '{iso_3166_2}'"
         )
-        queried: gpd.GeoDataFrame = queried.to_pandas()
+        queried: pd.DataFrame = queried.to_pandas()
         if len(queried) >= 1:
             result: type[shapely.Polygon, shapely.MultiPolygon] = queried["geometry"][0]
             return result
@@ -88,7 +87,7 @@ class Giso:
             FROM subdivisions
                      JOIN query_pt ON ST_Intersects(subdivisions.geometry, query_pt.geometry)
             """)
-        queried: gpd.GeoDataFrame = queried.to_pandas()
+        queried: pd.DataFrame = queried.to_pandas()
         self._sd.drop_view("query_pt")
 
         if len(queried) >= 1:
@@ -111,30 +110,24 @@ class Giso:
 
         if os.path.exists(self._data_file):
             if not overwrite:
-                # print("File already exists")
+                # click.echo("File already exists")
                 return
             else:
-                print(f"Removing {self._data_file}")
+                click.echo(f"Removing {self._data_file}")
                 os.remove(self._data_file)
 
         if not os.path.exists(data_dir):
             os.mkdir(data_dir)
 
-        print(f"Downloading {self._data_url} to {self._data_file}")
-        try:
-            gdf = gpd.read_file(self._data_url)
-        except DataSourceError:
-            raise FileNotFoundError(self._data_url)
+        click.echo(f"Downloading {self._data_url} to {self._data_file}")
+        gdf = gpd.read_file(self._data_url)
 
         gdf.to_parquet(self._data_file, compression="brotli")
 
-        try:
-            assert os.path.exists(self._data_file)
-            assert os.path.getsize(self._data_file) > 1000
-        except AssertionError:
-            raise ValueError(f"Invalid file {self._data_file}")
+        assert os.path.exists(self._data_file)
+        assert os.path.getsize(self._data_file) > 1000
 
-        print("Done!")
+        click.echo("Done!")
 
 
 _inst = Giso()

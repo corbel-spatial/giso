@@ -33,13 +33,13 @@ ruff = ">=0.15.11,<1"
 types-shapely = ">=2.1.0.20260402,<3"
 
 [feature.dev.tasks]
-coverage = "pytest --cov=giso --cov-report=json:docs/pytest_coverage.json"
+coverage = "pytest --cov=giso --cov-report=json:docs/pytest_coverage.json --cov-report=term-missing"
 lint = "ruff check ./src ./tests"
 lint-format = "ruff format ./src ./tests"
 test = "pytest ./tests"
 
 [feature.docs]
 # dependencies should match docs/requirements.txt
-dependencies = { jupyter = ">=1.1.1,<2", myst-parser = ">=5.0.0,<6", nbsphinx = ">=0.9.8,<1", notebook = ">=7.5.6,<8", pydata-sphinx-theme = ">=0.17.1,<1", sphinx = ">=9.1.0,<10", sphinx-copybutton = ">=0.5.2,<1" }
+dependencies = { jupyter = ">=1.1.1,<2", myst-parser = ">=5.0.0,<6", nbsphinx = ">=0.9.8,<0.10", notebook = ">=7.5.6,<8", pydata-sphinx-theme = ">=0.17.1,<0.18", sphinx = ">=9.1.0,<10", sphinx-copybutton = ">=0.5.2,<0.6" }
 tasks = { docs = "./docs/make html" }
 target = { win-64 = { tasks = { docs = "./docs/make.bat html" } } }
