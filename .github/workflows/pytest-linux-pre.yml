@@ -12,7 +12,9 @@ jobs:
   test-on-prerelease-python:
     runs-on: ubuntu-latest
 
-    container: ghcr.io/corbel-spatial/here-be-dragons:next
+    container:
+      image: ghcr.io/corbel-spatial/here-be-dragons:next
+      options: --user root
 
     steps:
       # https://github.com/actions/checkout
@@ -28,6 +30,10 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
+          apt update
+          apt install build-essential pkg-config rustup -y
+          ldconfig
+          rustup default stable
           uv pip install --system \
                https://github.com/geopandas/pyogrio.git \
                https://github.com/pandas-dev/pandas.git \
