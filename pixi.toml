@@ -30,13 +30,15 @@ pixi-pycharm = ">=0.0.11,<1"
 pytest = ">=9.0.3,<10"
 pytest-cov = ">=7.1.0,<8"
 ruff = ">=0.15.11,<1"
+ty = ">=0.0.61,<0.0.62"
 types-shapely = ">=2.1.0.20260402,<3"
 
 [feature.dev.tasks]
-coverage = "pytest --cov=giso --cov-report=json:docs/pytest_coverage.json"
-lint = "ruff check ./src ./tests"
-lint-format = "ruff format ./src ./tests"
+coverage = "pytest --cov=giso --cov-report=json:docs/pytest_coverage.json --cov-report=term-missing"
+lint = "ruff check ./src ./tests && ruff format ./src ./tests"
 test = "pytest ./tests"
+typecheck = "ty check src/ tests/"
+checkall = { cmd = "echo 'All checks finished'", depends-on = ["coverage", "lint", "typecheck"]}
 
 [feature.docs]
 # dependencies should match docs/requirements.txt

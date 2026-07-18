@@ -6,6 +6,7 @@ import shapely
 from pyogrio.errors import DataSourceError
 from sedonadb import dataframe as sdf
 
+
 _DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 _DATA_FILE = os.path.join(_DATA_DIR, "ne_10m_admin_1_states_provinces.parquet")
 _DATA_URL = "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_admin_1_states_provinces.geojson"
@@ -50,9 +51,7 @@ class Giso:
             df = self._sd.read_parquet(self._data_file)
             df.to_view("subdivisions")
 
-    def geocode(
-        self, iso_3166_2: str
-    ) -> type[shapely.Polygon, shapely.MultiPolygon] | None:
+    def geocode(self, iso_3166_2: str) -> shapely.MultiPolygon | shapely.Polygon | None:
         """
         This function geocodes a location based on its ISO 3166-2 country code.
         It retrieves the corresponding geographic data from a GeoDataFrame and
@@ -62,9 +61,9 @@ class Giso:
         queried: sdf.DataFrame = self._sd.sql(
             f"SELECT geometry FROM subdivisions WHERE iso_3166_2 = '{iso_3166_2}'"
         )
-        queried: gpd.GeoDataFrame = queried.to_pandas()
+        queried: gpd.GeoDataFrame = queried.to_pandas()  # type: ignore
         if len(queried) >= 1:
-            result: type[shapely.Polygon, shapely.MultiPolygon] = queried["geometry"][0]
+            result: shapely.Polygon | shapely.MultiPolygon = queried["geometry"][0]
             return result
         else:
             return None
@@ -77,7 +76,7 @@ class Giso:
             x: The longitude coordinate of the point.
             y: The latitude coordinate of the point.
         """
-        query_pt = gpd.GeoDataFrame(geometry=[shapely.Point(x, y)], crs="EPSG:4326")
+        query_pt = gpd.GeoDataFrame(geometry=[shapely.Point(x, y)], crs="EPSG:4326")  # type: ignore
         query_pt = self._sd.create_data_frame(query_pt)
         query_pt.to_view("query_pt")
 
@@ -88,7 +87,7 @@ class Giso:
             FROM subdivisions
                      JOIN query_pt ON ST_Intersects(subdivisions.geometry, query_pt.geometry)
             """)
-        queried: gpd.GeoDataFrame = queried.to_pandas()
+        queried: gpd.GeoDataFrame = queried.to_pandas()  # type: ignore
         self._sd.drop_view("query_pt")
 
         if len(queried) >= 1:
@@ -140,7 +139,7 @@ class Giso:
 _inst = Giso()
 
 
-def geocode(iso_3166_2: str) -> type[shapely.Polygon, shapely.MultiPolygon] | None:
+def geocode(iso_3166_2: str) -> shapely.MultiPolygon | shapely.Polygon | None:
     return _inst.geocode(iso_3166_2=iso_3166_2)
 
 
