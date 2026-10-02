@@ -2,7 +2,7 @@ import click
 import pytest
 from click.testing import CliRunner
 
-from giso._cli import cli  # noqa
+from giso._cli import cli
 
 cli: click.Command
 

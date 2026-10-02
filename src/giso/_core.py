@@ -6,7 +6,6 @@ import shapely
 from pyogrio.errors import DataSourceError
 from sedonadb import dataframe as sdf
 
-
 _DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 _DATA_FILE = os.path.join(_DATA_DIR, "ne_10m_admin_1_states_provinces.parquet")
 _DATA_URL = "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_admin_1_states_provinces.geojson"

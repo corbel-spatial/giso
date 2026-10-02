@@ -7,7 +7,6 @@ import shapely
 import giso
 from giso import Giso
 
-
 data_url = (
     Path(__file__).parent / "data" / "ne_10m_admin_1_states_provinces.geojson"
 ).as_posix()
