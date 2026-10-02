@@ -3,7 +3,7 @@ name: Pytest - Windows
 on:
   workflow_dispatch:
   pull_request:
-    paths: [ "src/**", "tests/**" ]
+    paths: [ "pyproject.toml", "src/**", "tests/**" ]
 
 permissions:
   contents: read
@@ -19,7 +19,7 @@ jobs:
 
     steps:
       # https://github.com/actions/checkout
-      - uses: actions/checkout@v7.0.1
+      - uses: actions/checkout@v7
         with:
           sparse-checkout: |
             .github/pixi.lock
@@ -31,9 +31,9 @@ jobs:
           sparse-checkout-cone-mode: false
       # https://github.com/marketplace/actions/setup-pixi
 
-      - uses: prefix-dev/setup-pixi@v0.10.2
+      - uses: prefix-dev/setup-pixi@v0.11.2
         with:
-          pixi-version: v0.81.0
+          pixi-version: v0.83.0
           cache: true
           environments: ${{ matrix.environment }}
           manifest-path: .github/pixi.toml
