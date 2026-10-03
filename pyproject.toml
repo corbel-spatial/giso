@@ -58,3 +58,10 @@ packages = ["src/giso"]
 
 [tool.coverage.json]
 pretty_print = true
+
+[tool.ty.environment]
+python = ".pixi/envs/dev"
+root = ["./src"]
+
+[tool.ty.src]
+include = ["./src", "./tests"]

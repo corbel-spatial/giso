@@ -15,7 +15,8 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        environment: [ py311, py312, py313, py314, py315 ]
+        environment: [ py311, py312, py313, py314 ]
+#        environment: [ py311, py312, py313, py314, py315 ]
 
     steps:
       # https://github.com/actions/checkout
