@@ -1,0 +1,34 @@
+name: Check Upstream Support for Next Python Version
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+
+    steps:
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v7.0.1
+        with:
+          sparse-checkout: |
+            .github/pixi.lock
+            .github/pixi.toml
+            pyproject.toml
+            README.md
+          sparse-checkout-cone-mode: false
+
+      # https://github.com/marketplace/actions/setup-pixi
+      - uses: prefix-dev/setup-pixi@v0.10.2
+        with:
+          pixi-version: v0.81.0
+          cache: true
+          environments: ${{ matrix.environment }}
+          manifest-path: .github/pixi.toml
+          activate-environment: true
+          locked: false
+          frozen: false
+      - run: pixi workspace environment add py315 && pixi add -e py315 'python=3.15'
