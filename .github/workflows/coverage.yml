@@ -3,10 +3,10 @@ name: Update Test Coverage
 on:
   workflow_dispatch:
   pull_request:
-    paths: [ "src/**", "tests/**" ]
+    paths: [ "pyproject.toml", "src/**", "tests/**" ]
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   coverage:
@@ -26,6 +26,7 @@ jobs:
             src
             tests
           sparse-checkout-cone-mode: false
+          ref: ${{ github.head_ref }}
 
       # https://github.com/marketplace/actions/setup-pixi
       - uses: prefix-dev/setup-pixi@v0.11.2
@@ -45,5 +46,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add ./docs/pytest_coverage.json
-          git commit -m "Update Test Coverage"
+          git diff --staged --quiet || git commit -m "Update Test Coverage"
           git push

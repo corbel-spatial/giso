@@ -11,33 +11,25 @@ sedonadb = ">=0.5.0,<0.6"
 [pypi-dependencies]
 giso = { path = ".", editable = true }
 
-[environments]
-default = { features = ["default"], solve-group = "default" }
-docs = { features = ["docs"], solve-group = "docs" }
-
-[environments.dev]
-features = ["dev", "docs"]
-solve-group = "default"
-
-[feature.dev.dependencies]
-hatchling = ">=1.32.4,<2"
+[environments.dev.dependencies]
 pandas-stubs = ">=3.0.5.260914,<4"
 pixi-pycharm = ">=0.0.12,<0.0.13"
 pytest = ">=9.1.1,<10"
 pytest-cov = ">=7.1.0,<8"
-ruff = ">=0.17.2,<0.18"
-ty = ">=0.0.90,<0.0.91"
+ruff = ">=0.17.1,<0.18"
+scipy-stubs = ">=1.18.1.1,<2"
+ty = ">=0.0.89,<0.0.90"
+types-geopandas = ">=1.1.4.20261006,<2"
 types-shapely = ">=2.1.0.20260402,<3"
 
-[feature.dev.tasks]
-build = "hatchling build"
-checkall = { cmd = "echo 'All checks finished'", depends-on = ["coverage", "lint", "typecheck"]}
+[environments.dev.tasks]
 coverage = "pytest --cov=giso --cov-report=json:docs/pytest_coverage.json --cov-report=term-missing"
-lint = "ruff check ./src ./tests && ruff format ./src ./tests"
-test = "pytest ./tests"
-typecheck = "ty check src/ tests/"
+lint-ruff = "ruff check --fix ./src ./tests"
+lint-ty = "ty check src/ tests/"
+lint = { depends-on = [ "lint-ruff", "lint-ty" ] }
+test = { cmd = "pytest ./tests", depends-on = ["lint"] }
 
-[feature.docs]
-dependencies = { jupyter = ">=1.1.1,<2", myst-parser = ">=5.1.0,<6", nbsphinx = ">=0.9.8,<0.10", notebook = ">=7.6.3,<8", pydata-sphinx-theme = ">=0.23.0,<0.24", sphinx = ">=9.2.0,<10", sphinx-copybutton = ">=0.5.2,<0.6" }
+[environments.docs]
+dependencies = { jupyter = ">=1.1.1,<2", myst-parser = ">=5.1.0,<6", nbsphinx = ">=0.9.8,<0.10", notebook = ">=7.6.3,<8", pydata-sphinx-theme = ">=0.23.0,<0.24", sphinx = ">=9.1.0,<10", sphinx-copybutton = ">=0.5.2,<0.6" }
 tasks = { docs = "./docs/make html" }
 target = { win-64 = { tasks = { docs = "./docs/make.bat html" } } }

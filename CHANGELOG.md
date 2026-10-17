@@ -13,5 +13,5 @@
 
 ## v1.0.2
 
-- Bump dependencies and prep for Python 3.15 release
+- Bump dependencies and fully support Python 3.15
 - Refactor tests and typing
