@@ -2,12 +2,12 @@
     "meta": {
         "format": 3,
         "version": "7.16.2",
-        "timestamp": "2026-10-02T17:14:40.696839",
+        "timestamp": "2026-10-22T23:15:34.250438",
         "branch_coverage": false,
         "show_contexts": false
     },
     "files": {
-        "src\\giso\\__init__.py": {
+        "src/giso/__init__.py": {
             "executed_lines": [
                 1,
                 3
@@ -67,7 +67,7 @@
                 }
             }
         },
-        "src\\giso\\_cli.py": {
+        "src/giso/_cli.py": {
             "executed_lines": [
                 1,
                 2,
@@ -286,7 +286,7 @@
                 }
             }
         },
-        "src\\giso\\_core.py": {
+        "src/giso/_core.py": {
             "executed_lines": [
                 1,
                 3,

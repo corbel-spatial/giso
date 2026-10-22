@@ -20,6 +20,9 @@
       </map>
     </option>
   </component>
+  <component name="RuffConfiguration">
+    <option name="inspections" value="false" />
+  </component>
   <component name="RuffModuleSettingsStorage">
     <option name="moduleSettings">
       <map>

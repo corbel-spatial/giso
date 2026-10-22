@@ -74,7 +74,7 @@ class Giso:
             x: The longitude coordinate of the point.
             y: The latitude coordinate of the point.
         """
-        query_pt = gpd.GeoDataFrame(geometry=[shapely.Point(x, y)], crs="EPSG:4326")  # ty: ignore[no-matching-overload]
+        query_pt = gpd.GeoDataFrame(geometry=[shapely.Point(x, y)], crs="EPSG:4326")
         query_pt = self._sd.create_data_frame(query_pt)
         query_pt.to_view("query_pt")
 
