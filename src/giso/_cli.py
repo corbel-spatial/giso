@@ -1,13 +1,46 @@
-from typing import TYPE_CHECKING
+from pathlib import Path
+from typing import IO, Any
 
 import rich_click as click
 
-if TYPE_CHECKING:
-    import shapely
+
+def _handle_result(result: Any | None, output: IO | None, overwrite:bool) -> None:
+    if result is None:
+        click.echo("No results")
+        return
+
+    result = str(result)
+    
+    if output:
+        fp = Path(output.name).absolute()
+        if not overwrite and fp.exists():
+            click.echo("Output file already exists, retry with --overwrite flag")
+            return
+
+        click.echo(f"Writing output to '{fp.as_posix()}'")
+        output.write(result)
+        output.close()
+        click.echo("Done!")
+    else:
+        click.echo(result)
 
 
 @click.command(no_args_is_help=True, context_settings={"ignore_unknown_options": True})
 @click.argument("args", nargs=-1)
+@click.option(
+    "--output",
+    "-o",
+    type=click.File(mode="w", lazy=True),
+    default=None,
+    help="Save the output to a file instead of stdout.",
+)
+@click.option(
+    "--overwrite",
+    "-w",
+    is_flag=True,
+    default=False,
+    help="Overwrite an existing output file.",
+)
 @click.option(
     "--update",
     type=bool,
@@ -31,8 +64,13 @@ if TYPE_CHECKING:
 )
 @click.version_option(package_name="giso", prog_name="giso")
 def cli(
-    args: list[str], update: bool, update_source: str | None, src: str | None
-) -> "str | shapely.Polygon | shapely.MultiPolygon | None":
+    args: list[str],
+    output: IO | None,
+    overwrite: bool,
+    update: bool,
+    update_source: str | None,
+    src: str | None,
+) -> None:
     """
     A simple command line tool to help with geocoding country/region ISO 3166-2 codes.
 
@@ -62,7 +100,7 @@ def cli(
 
         _update(src=src, overwrite=True, update_source=update_source)
         if len(args) == 0:
-            return None
+            return
 
     iso_code, x, y = None, None, None
     try:
@@ -96,27 +134,25 @@ def cli(
             "or a comma/space-separated longitude/latitude pair.",
             err=True,
         )
-        return None
+        return
 
     if iso_code:
         # click.echo(f"Geocoding: {iso_code}")
         from ._core import geocode
 
-        assert isinstance(iso_code, str)
         result = geocode(iso_code)
-        click.echo(str(result))
-        return result
+        _handle_result(result, output, overwrite)
+
+        return
 
     elif x and y:
         # click.echo(f"Reverse geocoding: x={x}, y={y}")
         from ._core import reverse_geocode
 
         result = reverse_geocode(x, y)
-        click.echo(str(result))
-        return result
+        _handle_result(result, output, overwrite)
 
-    else:
-        return None  # pragma: no cover
+        return
 
 
 if __name__ == "__main__":

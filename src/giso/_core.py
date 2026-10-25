@@ -100,7 +100,6 @@ class Giso:
             - https://www.naturalearthdata.com/
 
         """
-        data_dir = self._data_file.parent
 
         if src is not None:
             self._data_file = Path(src)
