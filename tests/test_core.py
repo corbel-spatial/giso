@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 
 import pytest
@@ -27,7 +26,7 @@ def test_init() -> None:
 def test_update(g: giso.Giso) -> None:
     g.update()
     giso._core._clear()
-    os.rmdir(os.path.dirname(g._data_file))
+    g._data_file.parent.rmdir()
     g.update()
     g.update()
     g.update(overwrite=True)

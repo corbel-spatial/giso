@@ -1,4 +1,4 @@
-import os
+from pathlib import Path
 
 import geopandas as gpd
 import pandas as pd
@@ -7,8 +7,8 @@ import sedonadb
 import shapely
 from sedonadb import dataframe as sdf
 
-_DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
-_DATA_FILE = os.path.join(_DATA_DIR, "ne_10m_admin_1_states_provinces.parquet")
+_DATA_DIR = (Path(__file__).parent / "data").absolute()
+_DATA_FILE = (_DATA_DIR / "ne_10m_admin_1_states_provinces.parquet").absolute()
 _DATA_URL = "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_admin_1_states_provinces.geojson"
 
 
@@ -19,10 +19,10 @@ def _clear() -> None:
     It first checks if the data file exists and removes it if it does.
     Then, it checks if the data directory exists and removes it if it does.
     """
-    if os.path.exists(_DATA_FILE):
+    if _DATA_FILE.exists():
         click.echo(f"Removing {_DATA_FILE}")
-        os.remove(_DATA_FILE)
-
+        _DATA_FILE.unlink()
+        click.echo("Done")
 
 class Giso:
     """
@@ -32,7 +32,7 @@ class Giso:
 
     def __init__(
         self,
-        data_file: str = _DATA_FILE,
+        data_file: Path = _DATA_FILE,
         data_url: str = _DATA_URL,
         autoupdate: bool = True,
     ):
@@ -43,7 +43,7 @@ class Giso:
         if autoupdate:
             self.update()
 
-        if not os.path.exists(self._data_file):
+        if not self._data_file.exists():
             click.echo("Giso object must be initialized with Giso.update()")
         else:
             df = self._sd.read_parquet(self._data_file)
@@ -104,27 +104,22 @@ class Giso:
             - https://www.naturalearthdata.com/
 
         """
-        data_dir = os.path.dirname(self._data_file)
+        data_dir = self._data_file.parent
 
-        if os.path.exists(self._data_file):
+        if self._data_file.exists():
             if not overwrite:
                 # click.echo("File already exists")
                 return
             else:
                 click.echo(f"Removing {self._data_file}")
-                os.remove(self._data_file)
+                self._data_file.unlink()
 
-        if not os.path.exists(data_dir):
-            os.mkdir(data_dir)
+        if not data_dir.exists():
+            data_dir.mkdir()
 
         click.echo(f"Downloading {self._data_url} to {self._data_file}")
         gdf = gpd.read_file(self._data_url)
-
         gdf.to_parquet(self._data_file, compression="brotli")
-
-        assert os.path.exists(self._data_file)
-        assert os.path.getsize(self._data_file) > 1000
-
         click.echo("Done!")
 
 
