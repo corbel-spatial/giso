@@ -6,16 +6,33 @@ if TYPE_CHECKING:
     import shapely
 
 
-@click.command(
-    no_args_is_help=True,
-    context_settings={"ignore_unknown_options": True},
-)
+@click.command(no_args_is_help=True, context_settings={"ignore_unknown_options": True})
 @click.argument("args", nargs=-1)
 @click.option(
-    "--update", help="Re-download the lookup dataset before querying it.", is_flag=True
+    "--update",
+    type=bool,
+    default=False,
+    is_flag=True,
+    help="Re-download the lookup dataset before querying it.",
+)
+@click.option(
+    "--update-source",
+    type=str,
+    default=None,
+    hidden=True,
+    help="URL or path to a source dataset .geojson to be converted to .parquet - only use in addition to the --update flag",
+)
+@click.option(
+    "--src",
+    type=str,
+    default=None,
+    hidden=True,
+    help="URL or path to a source dataset .parquet for use in this lookup operation",
 )
 @click.version_option(package_name="giso", prog_name="giso")
-def cli(args, update) -> "str | shapely.Polygon | shapely.MultiPolygon | None":
+def cli(
+    args: list[str], update: bool, update_source: str | None, src: str | None
+) -> "str | shapely.Polygon | shapely.MultiPolygon | None":
     """
     A simple command line tool to help with geocoding country/region ISO 3166-2 codes.
 
@@ -41,9 +58,9 @@ def cli(args, update) -> "str | shapely.Polygon | shapely.MultiPolygon | None":
     Note: giso uses the dataset "ne_10m_admin_1_states_provinces" from https://github.com/nvkelso/natural-earth-vector
     """
     if update:
-        from ._core import update
+        from ._core import update as _update
 
-        update(overwrite=True)
+        _update(src=src, overwrite=True, update_source=update_source)
         if len(args) == 0:
             return None
 
@@ -98,8 +115,9 @@ def cli(args, update) -> "str | shapely.Polygon | shapely.MultiPolygon | None":
         click.echo(str(result))
         return result
 
-    return None
+    else:
+        return None  # pragma: no cover
 
 
 if __name__ == "__main__":
-    cli([], False)
+    cli()  # pragma: no cover

@@ -21,7 +21,7 @@ def test_args(cli_runner: CliRunner, clifn: Command) -> None:
 
 
 def test_help(cli_runner: CliRunner, clifn: Command) -> None:
-    result = cli_runner.invoke(clifn, ["--help"])
+    result = cli_runner.invoke(clifn, "--help")
     assert result.exit_code == 0
     assert "Usage:" in result.output
 
@@ -86,9 +86,10 @@ def test_reverse_geocode(cli_runner: CliRunner, clifn: Command) -> None:
     assert "Invalid" in result.output
 
 
-def test_update(cli_runner: CliRunner, clifn: Command) -> None:
-    result = cli_runner.invoke(clifn, "--update")
+def test_update(cli_runner: CliRunner, clifn: Command, test_data_url, tmp_data_file) -> None:
+    result = cli_runner.invoke(clifn, ["--update", "--update-source", test_data_url, "--src", tmp_data_file])
     assert result.exit_code == 0
+
 
 def test_version(cli_runner: CliRunner, clifn: Command) -> None:
     result = cli_runner.invoke(clifn, "--version")

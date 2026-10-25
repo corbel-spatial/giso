@@ -12,18 +12,6 @@ _DATA_FILE = (_DATA_DIR / "ne_10m_admin_1_states_provinces.parquet").absolute()
 _DATA_URL = "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_admin_1_states_provinces.geojson"
 
 
-def _clear() -> None:
-    """Clears the data directory and file.
-
-    This function removes the data directory and its contents.
-    It first checks if the data file exists and removes it if it does.
-    Then, it checks if the data directory exists and removes it if it does.
-    """
-    if _DATA_FILE.exists():
-        click.echo(f"Removing {_DATA_FILE}")
-        _DATA_FILE.unlink()
-        click.echo("Done")
-
 class Giso:
     """
     This class provides functionality to download, read, and geocode
@@ -34,20 +22,23 @@ class Giso:
         self,
         data_file: Path = _DATA_FILE,
         data_url: str = _DATA_URL,
-        autoupdate: bool = True,
+        autoupdate: bool = False,
     ):
-        self._data_file = data_file
-        self._data_url = data_url
+        self._data_file = Path(data_file)
+        self._data_url = str(data_url)
         self._sd: sedonadb.context.SedonaContext = sedonadb.connect()
 
         if autoupdate:
             self.update()
 
-        if not self._data_file.exists():
-            click.echo("Giso object must be initialized with Giso.update()")
-        else:
-            df = self._sd.read_parquet(self._data_file)
-            df.to_view("subdivisions")
+        df = self._sd.read_parquet(self._data_file)
+        df.to_view("subdivisions")
+
+    def clear(self) -> None:
+        """Clears the data file."""
+        click.echo(f"Removing {_DATA_FILE}")
+        self._data_file.unlink(missing_ok=True)
+        click.echo("Done")
 
     def geocode(self, iso_3166_2: str) -> shapely.MultiPolygon | shapely.Polygon | None:
         """
@@ -95,7 +86,12 @@ class Giso:
         else:
             return None
 
-    def update(self, overwrite: bool = False) -> None:
+    def update(
+        self,
+        src: str | Path | None = None,
+        overwrite: bool = False,
+        update_source: str | None = None,
+    ) -> None:
         """
         Pulls from a public domain dataset on GitHub
 
@@ -106,19 +102,20 @@ class Giso:
         """
         data_dir = self._data_file.parent
 
-        if self._data_file.exists():
-            if not overwrite:
-                # click.echo("File already exists")
-                return
-            else:
-                click.echo(f"Removing {self._data_file}")
-                self._data_file.unlink()
+        if src is not None:
+            self._data_file = Path(src)
 
-        if not data_dir.exists():
-            data_dir.mkdir()
+        self._data_file = self._data_file.with_suffix(".parquet")
 
-        click.echo(f"Downloading {self._data_url} to {self._data_file}")
-        gdf = gpd.read_file(self._data_url)
+        if self._data_file.exists() and overwrite is False:
+            return
+
+        if overwrite:
+            self.clear()
+
+        src = self._data_url if update_source is None else update_source
+        click.echo(f"Downloading {src} to {self._data_file}")
+        gdf = gpd.read_file(src)
         gdf.to_parquet(self._data_file, compression="brotli")
         click.echo("Done!")
 
@@ -134,5 +131,9 @@ def reverse_geocode(x: float, y: float) -> str | None:
     return _inst.reverse_geocode(x=x, y=y)
 
 
-def update(overwrite: bool = False):
-    _inst.update(overwrite=overwrite)
+def update(
+    src: str | Path | None = None,
+    overwrite: bool = False,
+    update_source: str | None = None,
+) -> None:
+    _inst.update(src=src, overwrite=overwrite, update_source=update_source)

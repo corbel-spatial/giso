@@ -1,34 +1,27 @@
-from pathlib import Path
-
-import pytest
 import shapely
 
 import giso
 
-data_url = (
-    Path(__file__).parent / "data" / "ne_10m_admin_1_states_provinces.geojson"
-).as_posix()
 
-
-@pytest.fixture
-def g() -> giso.Giso:
-    g = giso.Giso(data_url=data_url)
-    return g
-
-
-def test_init() -> None:
-    g = giso.Giso(data_url=data_url, autoupdate=True)
+def test_init(tmp_data_file, test_data_url) -> None:
+    g = giso.Giso(data_file=tmp_data_file, data_url=test_data_url)
     assert isinstance(g, giso.Giso)
-    g = giso.Giso(data_url=data_url, autoupdate=False)
+
+
+def test_init_autoupdate(tmp_data_file, test_data_url):
+    g = giso.Giso(data_file=tmp_data_file, data_url=test_data_url, autoupdate=True)
     assert isinstance(g, giso.Giso)
 
 
 def test_update(g: giso.Giso) -> None:
     g.update()
-    giso._core._clear()
-    g._data_file.parent.rmdir()
-    g.update()
-    g.update()
+
+
+def test_update_clear(g: giso.Giso) -> None:
+    g.clear()
+
+
+def test_update_overwrite(g: giso.Giso) -> None:
     g.update(overwrite=True)
 
 

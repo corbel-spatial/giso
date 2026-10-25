@@ -30,7 +30,7 @@ types-shapely = ">=2.1.0.20260402,<3"
 [environments.dev.tasks]
 coverage = "pytest --cov=giso --cov-report=json:docs/pytest_coverage.json --cov-report=term-missing"
 lint-ruff = "ruff check --fix ./src ./tests"
-lint-ty = "ty check src/ tests/"
+lint-ty = "ty check --fix ./src ./tests"
 lint = { depends-on = ["lint-ruff", "lint-ty"] }
 test = { cmd = "pytest ./tests", depends-on = ["lint"] }
 
