@@ -1,5 +1,9 @@
+from typing import TYPE_CHECKING
+
 import rich_click as click
-import shapely
+
+if TYPE_CHECKING:
+    import shapely
 
 
 @click.command(
@@ -10,8 +14,8 @@ import shapely
 @click.option(
     "--update", help="Re-download the lookup dataset before querying it.", is_flag=True
 )
-def cli(args, update) -> str | shapely.Polygon | shapely.MultiPolygon | None:
-    # noinspection PyUnresolvedReferences
+@click.version_option(package_name="giso", prog_name="giso")
+def cli(args, update) -> "str | shapely.Polygon | shapely.MultiPolygon | None":
     """
     A simple command line tool to help with geocoding country/region ISO 3166-2 codes.
 
@@ -24,14 +28,14 @@ def cli(args, update) -> str | shapely.Polygon | shapely.MultiPolygon | None:
 
         Example:
 
-        >>> giso -122.2483823, 37.8245529
+        > giso -122.2483823, 37.8245529
         US-CA
 
     2. A valid ISO 3166-2 code. Returns the corresponding geometry as Well-Known Text (WKT).
 
         Example:
 
-        >>> giso US-CA
+        > giso US-CA
         MULTIPOLYGON (((-114.724285 32.712836, -114.764541 32.709839, [...]
 
     Note: giso uses the dataset "ne_10m_admin_1_states_provinces" from https://github.com/nvkelso/natural-earth-vector

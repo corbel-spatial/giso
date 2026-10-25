@@ -89,3 +89,8 @@ def test_reverse_geocode(cli_runner: CliRunner, clifn: Command) -> None:
 def test_update(cli_runner: CliRunner, clifn: Command) -> None:
     result = cli_runner.invoke(clifn, "--update")
     assert result.exit_code == 0
+
+def test_version(cli_runner: CliRunner, clifn: Command) -> None:
+    result = cli_runner.invoke(clifn, "--version")
+    assert result.output.startswith("giso")
+    assert result.exit_code == 0
