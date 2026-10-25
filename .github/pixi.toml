@@ -1,15 +1,14 @@
 [workspace]
 channels = ["conda-forge"]
-#platforms = ["linux-64", "osx-64", "win-64"]
-platforms = ["linux-64", "win-64"]
+platforms = ["linux-64", "osx-64", "win-64"]
 
 [dependencies]
 python = ">=3.11,<3.16"
 pytest = ">=9,<10"
-# these should match the root pixi.toml
+# these should match the root pyproject.toml
 geoarrow-pyarrow = ">=0.3.0,<0.4"
 geopandas = ">=1.2.0,<2"
-rich-click = ">=1.9.9,<2"
+rich-click = ">=1.9.0,<2"
 sedonadb = ">=0.5.0,<0.6"
 
 [tasks]
@@ -17,6 +16,9 @@ test = "pytest ../tests"
 
 [pypi-dependencies]
 giso = { path = "..", editable = false }
+
+[workspace.conda-pypi-map]
+conda-forge = { mapping = { sedonadb = "sedonadb" } }  # TODO missing win-64 wheels on pypi
 
 [environments.py311.dependencies]
 python = "3.11.*"
@@ -32,8 +34,3 @@ python = "3.14.*"
 
 [environments.py315.dependencies]
 python = "3.15.*"
-
-[environments.py315.pypi-dependencies]
-apache-arrow = "*"
-geoarrow-pyarrow = ">=0.3.0,<0.4"
-sedonadb = ">=0.5.0,<0.6"

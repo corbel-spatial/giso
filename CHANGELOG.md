@@ -1,9 +1,10 @@
 # Changelog
 
-## v1.0.0
+## v1.0.2
 
-- Initial release
-
+- Bump dependencies and fully support Python 3.15
+- Refactor tests and typing
+- 
 ## v1.0.1
 
 - Housekeeping release
@@ -11,7 +12,6 @@
 - Refactor pixi.toml, GitHub Actions, linting, coverage
 - Drop Python 3.10 support
 
-## v1.0.2
+## v1.0.0
 
-- Bump dependencies and fully support Python 3.15
-- Refactor tests and typing
+- Initial release

@@ -20,7 +20,7 @@ pixi shell -e dev
 giso --help
 ```
 
-To run the pytest suite:
+To run the linting and test suite:
 
 ```shell
 pixi run test
