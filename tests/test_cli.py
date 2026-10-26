@@ -2,6 +2,8 @@ import pytest
 import shapely
 from click import Command
 from click.testing import CliRunner
+from hypothesis import given, settings
+from hypothesis import strategies as st
 
 from giso import _cli
 
@@ -135,3 +137,21 @@ def test_handle_result_output(tmp_path) -> None:
         _cli._handle_result(
             result="some result", output=f, overwrite=True, to_json=True, indent=2
         )
+
+
+@settings(deadline=None)
+@given(args=st.lists(st.text()))
+def test_cli_fuzz(args: list[str]) -> None:
+    # print(args)
+    runner = CliRunner()
+    runner.invoke(_cli.cli, args, catch_exceptions=False)
+
+
+st_adversarial_coord = st.floats(allow_nan=True, allow_infinity=True).map(str)
+
+
+@settings(deadline=None)
+@given(lon=st_adversarial_coord, lat=st_adversarial_coord)
+def test_cli_fuzz_coords(lon: str, lat: str) -> None:
+    runner = CliRunner()
+    runner.invoke(_cli.cli, [lon, lat], catch_exceptions=False)

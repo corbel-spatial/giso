@@ -4,6 +4,7 @@ platforms = ["linux-64", "osx-64", "win-64"]
 
 [dependencies]
 python = ">=3.11,<3.16"
+hypothesis = ">=6.170.10,<7"
 pytest = ">=9,<10"
 # these should match the root pyproject.toml
 geoarrow-pyarrow = ">=0.3.0,<0.4"
