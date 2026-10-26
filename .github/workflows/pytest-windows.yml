@@ -7,7 +7,6 @@ on:
 
 permissions:
   contents: read
-
 jobs:
   pytest:
     runs-on: windows-latest
@@ -17,7 +16,8 @@ jobs:
       matrix:
         environment: [ py311, py312, py313, py314, py315 ]
 
-    steps:
+#        environment: [ py311, py312, py313, py314, py315 ]    steps:
+      # https://github.com/actions/checkout
       # https://github.com/actions/checkout
       - uses: actions/checkout@v7
         with:
