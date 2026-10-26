@@ -5,6 +5,8 @@ from typing import IO
 import rich_click as click
 import shapely
 
+click.rich_click.TEXT_MARKUP = "rich"
+
 
 def _handle_result(
     result: shapely.MultiPolygon | shapely.Polygon | dict | str | None,
@@ -117,20 +119,24 @@ def cli(
     """
     A simple command line tool to help with geocoding country/region ISO 3166-2 codes.
 
+    \u00a0
+
     Takes one of two inputs:
 
-    - A longitude/latitude coordinate pair. Returns the corresponding ISO 3166-2 code, if found. Example:
 
-        > giso -122.2483823, 37.8245529
+    - A [bold yellow]longitude/latitude[/bold yellow] coordinate pair separated by comma or space. Returns the corresponding code, if found.
 
-        US-CA
+        [green]> giso -122.2483823, 37.8245529
 
-    - A valid ISO 3166-2 code. Returns the corresponding geometry as Well-Known Text (WKT). Example:
+        US-CA[/green]
 
-        > giso US-CA
 
-        MULTIPOLYGON (((-114.724285 32.712836, -114.764541 32.709839, [...]
-"""
+    - A valid [bold yellow]ISO 3166-2 code[/bold yellow]. Returns the corresponding geometry as Well-Known Text (WKT).
+
+        [green]> giso US-CA
+
+        MULTIPOLYGON (((-114.724285 32.712836, -114.764541 32.709839, [...][/green]
+    """
     if update:
         from ._core import update as _update
 
