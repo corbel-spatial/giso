@@ -1,13 +1,14 @@
 import pytest
+import shapely
 from click import Command
 from click.testing import CliRunner
 
-from giso._cli import cli
+from giso import _cli
 
 
 @pytest.fixture
 def clifn() -> Command:
-    return cli
+    return _cli.cli
 
 
 @pytest.fixture
@@ -86,8 +87,12 @@ def test_reverse_geocode(cli_runner: CliRunner, clifn: Command) -> None:
     assert "Invalid" in result.output
 
 
-def test_update(cli_runner: CliRunner, clifn: Command, test_data_url, tmp_data_file) -> None:
-    result = cli_runner.invoke(clifn, ["--update", "--update-source", test_data_url, "--src", tmp_data_file])
+def test_update(
+    cli_runner: CliRunner, clifn: Command, test_data_url, tmp_data_file
+) -> None:
+    result = cli_runner.invoke(
+        clifn, ["--update", "--update-source", test_data_url, "--src", tmp_data_file]
+    )
     assert result.exit_code == 0
 
 
@@ -95,3 +100,38 @@ def test_version(cli_runner: CliRunner, clifn: Command) -> None:
     result = cli_runner.invoke(clifn, "--version")
     assert result.output.startswith("giso")
     assert result.exit_code == 0
+
+
+def test_handle_result_geometry() -> None:
+    _cli._handle_result(
+        result=shapely.Polygon([[0, 0], [1, 0], [1, 1], [0, 1]]), to_json=True
+    )
+
+
+def test_handle_result_none() -> None:
+    _cli._handle_result(result=None)
+
+
+def test_handle_result_str(tmp_path) -> None:
+    _cli._handle_result(result="some result", to_json=True, indent=2)
+
+
+def test_handle_result_dict() -> None:
+    _cli._handle_result(result={"iso_3166_2": "US-CA"}, to_json=True)
+
+
+def test_handle_result_output(tmp_path) -> None:
+    with open(tmp_path / "test.txt", "w") as f:
+        _cli._handle_result(
+            result="some result", output=f, overwrite=False, to_json=True, indent=2
+        )
+
+    with open(tmp_path / "test.txt", "w") as f:
+        _cli._handle_result(
+            result="some result", output=f, overwrite=False, to_json=True, indent=2
+        )
+
+    with open(tmp_path / "test.txt", "w") as f:
+        _cli._handle_result(
+            result="some result", output=f, overwrite=True, to_json=True, indent=2
+        )

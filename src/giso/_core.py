@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 
 import geopandas as gpd
@@ -57,13 +58,16 @@ class Giso:
         else:
             return None
 
-    def reverse_geocode(self, x: float, y: float) -> str | None:
+    def reverse_geocode(
+        self, x: float, y: float, verbose: bool = False
+    ) -> dict[str, str | float] | str | None:
         """
         This function performs a reverse geocode lookup using a GeoDataFrame.
 
         Args:
             x: The longitude coordinate of the point.
             y: The latitude coordinate of the point.
+            verbose: Also return metadata
         """
         query_pt = gpd.GeoDataFrame(geometry=[shapely.Point(x, y)], crs="EPSG:4326")
         query_pt = self._sd.create_data_frame(query_pt)
@@ -71,18 +75,57 @@ class Giso:
 
         queried: sdf.DataFrame = self._sd.sql("""
             SELECT
-                subdivisions.iso_3166_2 as iso_3166_2,
-                subdivisions.geometry as geometry
-            FROM subdivisions
-                     JOIN query_pt ON ST_Intersects(subdivisions.geometry, query_pt.geometry)
+                f.iso_3166_2,
+                f.adm1_code,
+                f.wikipedia,
+                f.iso_a2,
+                f.name,
+                f.name_alt,
+                f.name_local,
+                f.type,
+                f.type_en,
+                f.code_local,
+                f.code_hasc,
+                f.postal,
+                f.sov_a3,
+                f.adm0_a3,
+                f.adm0_label,
+                f.latitude,
+                f.longitude,
+                f.admin,
+                f.geonunit,
+                f.gu_a3,
+                f.gn_id,
+                f.gn_name,
+                f.gns_id,
+                f.gns_name,
+                f.gn_region,
+                f.gn_a1_code,
+                f.region_sub,
+                f.sub_code,
+                f.gns_lang,
+                f.gns_adm1,
+                f.gns_region,
+                f.wikidataid,
+                f.geometry
+            FROM subdivisions f
+                     JOIN query_pt ON ST_Intersects(f.geometry, query_pt.geometry)
             """)
         queried: pd.DataFrame = queried.to_pandas()
         self._sd.drop_view("query_pt")
 
         if len(queried) >= 1:
-            result = queried["iso_3166_2"][0]
-            assert isinstance(result, str)
-            return result
+            if verbose:
+                result = queried.drop(columns="geometry")
+                result = result.to_json(orient="table")
+                result = json.loads(result)["data"][0]
+                assert isinstance(result, dict)
+                del result["index"]
+                return result
+            else:
+                result = queried["iso_3166_2"][0]
+                assert isinstance(result, str)
+                return result
         else:
             return None
 
@@ -126,8 +169,10 @@ def geocode(iso_3166_2: str) -> shapely.Polygon | shapely.MultiPolygon | None:
     return _inst.geocode(iso_3166_2=iso_3166_2)
 
 
-def reverse_geocode(x: float, y: float) -> str | None:
-    return _inst.reverse_geocode(x=x, y=y)
+def reverse_geocode(
+    x: float, y: float, verbose: bool = False
+) -> dict[str, str | float] | str | None:
+    return _inst.reverse_geocode(x=x, y=y, verbose=verbose)
 
 
 def update(

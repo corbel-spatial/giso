@@ -1,16 +1,41 @@
+import json
 from pathlib import Path
-from typing import IO, Any
+from typing import IO
 
 import rich_click as click
+import shapely
 
 
-def _handle_result(result: Any | None, output: IO | None, overwrite:bool) -> None:
+def _handle_result(
+    result: shapely.MultiPolygon | shapely.Polygon | dict | str | None,
+    output: IO | None = None,
+    overwrite: bool = False,
+    to_json: bool = False,
+    indent: int = 0,
+) -> None:
     if result is None:
         click.echo("No results")
         return
 
-    result = str(result)
-    
+    if indent < 1:
+        out_indent = None
+    else:
+        out_indent = indent
+
+    if to_json:
+        if isinstance(result, (shapely.MultiPolygon, shapely.Polygon)):
+            result = shapely.to_geojson(result, indent=out_indent)
+        elif isinstance(result, dict):
+            result = json.dumps(result, indent=out_indent)
+        elif isinstance(result, str):
+            pass
+        else:
+            raise TypeError(result)  # pragma: no cover
+    else:
+        result = str(result)
+
+    assert isinstance(result, str), result
+
     if output:
         fp = Path(output.name).absolute()
         if not overwrite and fp.exists():
@@ -42,10 +67,26 @@ def _handle_result(result: Any | None, output: IO | None, overwrite:bool) -> Non
     help="Overwrite an existing output file.",
 )
 @click.option(
+    "--to-json",
+    "-j",
+    is_flag=True,
+    default=False,
+    help="Provide results in JSON format.",
+)
+@click.option(
+    "--indent",
+    "-i",
+    type=int,
+    default=0,
+    show_default=True,
+    help="Indent level for JSON output.",
+)
+@click.option(
     "--update",
     type=bool,
     default=False,
     is_flag=True,
+    hidden=True,
     help="Re-download the lookup dataset before querying it.",
 )
 @click.option(
@@ -67,6 +108,8 @@ def cli(
     args: list[str],
     output: IO | None,
     overwrite: bool,
+    to_json: bool,
+    indent: int,
     update: bool,
     update_source: str | None,
     src: str | None,
@@ -74,27 +117,20 @@ def cli(
     """
     A simple command line tool to help with geocoding country/region ISO 3166-2 codes.
 
-    \b
-
     Takes one of two inputs:
 
-    1. A longitude/latitude coordinate pair. (Decimal degrees in WGS 1984 separated by a comma or a space.)
-    Returns the corresponding ISO 3166-2 code.
-
-        Example:
+    - A longitude/latitude coordinate pair. Returns the corresponding ISO 3166-2 code, if found. Example:
 
         > giso -122.2483823, 37.8245529
+
         US-CA
 
-    2. A valid ISO 3166-2 code. Returns the corresponding geometry as Well-Known Text (WKT).
-
-        Example:
+    - A valid ISO 3166-2 code. Returns the corresponding geometry as Well-Known Text (WKT). Example:
 
         > giso US-CA
-        MULTIPOLYGON (((-114.724285 32.712836, -114.764541 32.709839, [...]
 
-    Note: giso uses the dataset "ne_10m_admin_1_states_provinces" from https://github.com/nvkelso/natural-earth-vector
-    """
+        MULTIPOLYGON (((-114.724285 32.712836, -114.764541 32.709839, [...]
+"""
     if update:
         from ._core import update as _update
 
@@ -141,7 +177,7 @@ def cli(
         from ._core import geocode
 
         result = geocode(iso_code)
-        _handle_result(result, output, overwrite)
+        _handle_result(result, output, overwrite, to_json, indent)
 
         return
 
@@ -149,8 +185,8 @@ def cli(
         # click.echo(f"Reverse geocoding: x={x}, y={y}")
         from ._core import reverse_geocode
 
-        result = reverse_geocode(x, y)
-        _handle_result(result, output, overwrite)
+        result = reverse_geocode(x, y, to_json)
+        _handle_result(result, output, overwrite, to_json, indent)
 
         return
 

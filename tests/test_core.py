@@ -49,3 +49,13 @@ def test_reverse_geocode(g: giso.Giso) -> None:
     assert giso.reverse_geocode(103.8455041, 1.2936855) == "SG-01"
     assert g.reverse_geocode(0, 0) is None
     assert giso.reverse_geocode(0, 0) is None
+
+
+def test_reverse_geocode_verbose(g: giso.Giso) -> None:
+    r1 = g.reverse_geocode(-122.2483823, 37.8245529, True)
+    assert isinstance(r1, dict)
+    assert r1["iso_3166_2"] == "US-CA"
+
+    r2 = giso.reverse_geocode(-122.2483823, 37.8245529, True)
+    assert isinstance(r2, dict)
+    assert r2["iso_3166_2"] == "US-CA"
