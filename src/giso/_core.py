@@ -8,6 +8,8 @@ import sedonadb
 import shapely
 from sedonadb import dataframe as sdf
 
+from ._coords import parse_coordinates
+
 _DATA_DIR = (Path(__file__).parent / "data").absolute()
 _DATA_FILE = (_DATA_DIR / "ne_10m_admin_1_states_provinces.parquet").absolute()
 _DATA_URL = "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_admin_1_states_provinces.geojson"
@@ -59,17 +61,33 @@ class Giso:
             return None
 
     def reverse_geocode(
-        self, x: float, y: float, verbose: bool = False
+        self,
+        x: float | str | tuple | list,
+        y: float | str | bool | None = None,
+        verbose: bool = False,
     ) -> dict[str, str | float] | str | None:
         """
         This function performs a reverse geocode lookup using a GeoDataFrame.
 
         Args:
-            x: The longitude coordinate of the point.
-            y: The latitude coordinate of the point.
+            x: Longitude coordinate (float), or coordinate string/tuple/list.
+            y: Latitude coordinate (float/str), or verbose flag if x is a full coordinate string.
             verbose: Also return metadata
         """
-        query_pt = gpd.GeoDataFrame(geometry=[shapely.Point(x, y)], crs="EPSG:4326")
+        if isinstance(y, bool):
+            verbose = y
+            y = None
+
+        if y is None:
+            coords = parse_coordinates(x)
+        else:
+            coords = parse_coordinates(x, y)
+
+        if coords is None:
+            return None
+
+        lon, lat = coords
+        query_pt = gpd.GeoDataFrame(geometry=[shapely.Point(lon, lat)], crs="EPSG:4326")
         query_pt = self._sd.create_data_frame(query_pt)
         query_pt.to_view("query_pt")
 
@@ -170,7 +188,9 @@ def geocode(iso_3166_2: str) -> shapely.Polygon | shapely.MultiPolygon | None:
 
 
 def reverse_geocode(
-    x: float, y: float, verbose: bool = False
+    x: float | str | tuple | list,
+    y: float | str | bool | None = None,
+    verbose: bool = False,
 ) -> dict[str, str | float] | str | None:
     return _inst.reverse_geocode(x=x, y=y, verbose=verbose)
 

@@ -29,11 +29,26 @@ python -m pip install giso
 
 `giso` takes one of two inputs:
 
-- A longitude/latitude coordinate pair. (Decimal degrees in WGS 1984 separated by a comma or a space.)
-Returns the corresponding ISO 3166-2 code.
+- A coordinate input in any common format:
+  - **Decimal Degrees (DD)**: e.g. `-122.2483823, 37.8245529`, `37.8245529, -122.2483823`, or `37.824553N 122.248383W`
+  - **Degrees Decimal Minutes (DDM)**: e.g. `37° 49.473′ N, 122° 14.903′ W` or `37 49.473 N, 122 14.903 W`
+  - **Degrees Minutes Seconds (DMS)**: e.g. `37° 49′ 28.39″ N, 122° 14′ 54.18″ W` or `37 49 28.39 N, 122 14 54.18 W`
+  - **UTM**: e.g. `10S 566147 4186615` or `10N 566147 4186615`
+  - **MGRS / USNG**: e.g. `10SEG6614786615` or `10S EG 6614 8661`
+  - **GARS**: e.g. `006AG39`
+  - **GEOREF**: e.g. `MKPG1204`
+  Supports all coordinate formats from Esri ArcGIS Pro's Coordinate Conversion and context menu options.
+  Quotes or escapes are not needed for any coordinate format.
+  Returns the corresponding ISO 3166-2 code.
 
 ```shell
 giso -122.2483823, 37.8245529
+# US-CA
+
+giso 37° 49′ 28.39″ N, 122° 14′ 54.18″ W
+# US-CA
+
+giso 10SEG6614786615
 # US-CA
 ```
 

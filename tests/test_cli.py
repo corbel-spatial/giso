@@ -72,6 +72,95 @@ def test_reverse_geocode(cli_runner: CliRunner, clifn: Command) -> None:
     assert result.exit_code == 0
     assert "US-CA" in result.output
 
+    # Lat/Lon order (auto-detected)
+    result = cli_runner.invoke(clifn, "37.8245529, -122.2483823")
+    assert result.exit_code == 0
+    assert "US-CA" in result.output
+
+    # ArcGIS Pro Copy DD
+    result = cli_runner.invoke(clifn, "37.824553N 122.248383W")
+    assert result.exit_code == 0
+    assert "US-CA" in result.output
+
+    # ArcGIS Pro Copy DDM
+    result = cli_runner.invoke(clifn, "37° 49.4732′N 122° 14.9030′W")
+    assert result.exit_code == 0
+    assert "US-CA" in result.output
+
+    # ArcGIS Pro Copy DMS
+    result = cli_runner.invoke(clifn, """37° 49′ 28.39″N 122° 14′ 54.18″W""")
+    assert result.exit_code == 0
+    assert "US-CA" in result.output
+
+    # UTM
+    result = cli_runner.invoke(clifn, "10S 566147 4186615")
+    assert result.exit_code == 0
+    assert "US-CA" in result.output
+
+    # MGRS / USNG
+    result = cli_runner.invoke(clifn, "10SEG6614786615")
+    assert result.exit_code == 0
+    assert "US-CA" in result.output
+
+    result = cli_runner.invoke(clifn, ["10S", "EG", "6614", "8661"])
+    assert result.exit_code == 0
+    assert "US-CA" in result.output
+
+    # CLI unquoted tokens for all coordinate formats
+    # DD
+    result = cli_runner.invoke(clifn, ["37.824553N", "122.248383W"])
+    assert result.exit_code == 0
+    assert "US-CA" in result.output
+
+    result = cli_runner.invoke(clifn, ["37.824553", "N", "122.248383", "W"])
+    assert result.exit_code == 0
+    assert "US-CA" in result.output
+
+    # DDM unquoted
+    result = cli_runner.invoke(clifn, ["37°", "49.4732′", "N,", "122°", "14.9030′", "W"])
+    assert result.exit_code == 0
+    assert "US-CA" in result.output
+
+    result = cli_runner.invoke(clifn, ["37", "49.4732", "N", "122", "14.9030", "W"])
+    assert result.exit_code == 0
+    assert "US-CA" in result.output
+
+    result = cli_runner.invoke(clifn, ["37d", "49.4732m", "N", "122d", "14.9030m", "W"])
+    assert result.exit_code == 0
+    assert "US-CA" in result.output
+
+    # DMS unquoted
+    result = cli_runner.invoke(clifn, ["37°", "49′", "28.39″", "N,", "122°", "14′", "54.18″", "W"])
+    assert result.exit_code == 0
+    assert "US-CA" in result.output
+
+    result = cli_runner.invoke(clifn, ["37", "49", "28.39", "N", "122", "14", "54.18", "W"])
+    assert result.exit_code == 0
+    assert "US-CA" in result.output
+
+    result = cli_runner.invoke(clifn, ["37d", "49m", "28.39s", "N", "122d", "14m", "54.18s", "W"])
+    assert result.exit_code == 0
+    assert "US-CA" in result.output
+
+    # UTM unquoted
+    result = cli_runner.invoke(clifn, ["10S", "566147", "4186615"])
+    assert result.exit_code == 0
+    assert "US-CA" in result.output
+
+    result = cli_runner.invoke(clifn, ["UTM", "Zone", "10N", "566147", "4186615"])
+    assert result.exit_code == 0
+    assert "US-CA" in result.output
+
+    # GARS unquoted
+    result = cli_runner.invoke(clifn, ["006", "AG", "39"])
+    assert result.exit_code == 0
+    assert "AQ-X01~" in result.output
+
+    # GEOREF unquoted
+    result = cli_runner.invoke(clifn, ["MKPG", "12", "04"])
+    assert result.exit_code == 0
+    assert "GB-WIL" in result.output
+
     result = cli_runner.invoke(clifn, "badinput")
     assert result.exit_code == 0
     assert "Invalid" in result.output

@@ -1,3 +1,3 @@
 # TODO
 
-- Auto-detect various coordinate formats as input
+- [x] Auto-detect various coordinate formats as input

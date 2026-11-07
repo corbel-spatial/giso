@@ -1,9 +1,12 @@
 import json
+import re
 from pathlib import Path
 from typing import IO
 
 import rich_click as click
 import shapely
+
+from ._coords import parse_coordinates
 
 click.rich_click.TEXT_MARKUP = "rich"
 
@@ -124,11 +127,35 @@ def cli(
     Takes one of two inputs:
 
 
-    - A [bold yellow]longitude/latitude[/bold yellow] coordinate pair separated by comma or space. Returns the corresponding code, if found.
+    - A [bold yellow]coordinate[/bold yellow] in any of the following formats. Returns the corresponding ISO 3166-2 code, if found.
 
-        [green]> giso -122.2483823, 37.8245529
+        [bold]Decimal Degrees (DD):[/bold]
+        [green]> giso -122.2483823, 37.8245529[/green]
+        [green]> giso 37.8245529N 122.2483823W[/green]
 
-        US-CA[/green]
+        [bold]Degrees Decimal Minutes (DDM):[/bold]
+        [green]> giso 37° 49.473′ N, 122° 14.903′ W[/green]
+        [green]> giso 37 49.473 N, 122 14.903 W[/green]
+
+        [bold]Degrees Minutes Seconds (DMS):[/bold]
+        [green]> giso 37° 49′ 28.4″ N, 122° 14′ 54.2″ W[/green]
+        [green]> giso 37 49 28.4 N, 122 14 54.2 W[/green]
+
+        [bold]Universal Transverse Mercator (UTM):[/bold]
+        [green]> giso 10S 566147 4186615[/green]
+        [green]> giso UTM Zone 10N 566147 4186615[/green]
+
+        [bold]Military Grid Reference System (MGRS) / US National Grid (USNG):[/bold]
+        [green]> giso 10SEG6614786615[/green]
+        [green]> giso 10S EG 6614 8661[/green]
+
+        [bold]Global Area Reference System (GARS):[/bold]
+        [green]> giso 006AG39[/green]
+
+        [bold]World Geographic Reference System (GEOREF):[/bold]
+        [green]> giso MKPG1204[/green]
+
+        Quotes or escapes are not needed for any coordinate format.
 
 
     - A valid [bold yellow]ISO 3166-2 code[/bold yellow]. Returns the corresponding geometry as Well-Known Text (WKT).
@@ -144,57 +171,34 @@ def cli(
         if len(args) == 0:
             return
 
-    iso_code, x, y = None, None, None
-    try:
-        if len(args) == 1:
-            arg = args[0]
-            if "-" in arg and not arg.startswith("-"):  # geocode
-                iso_code = arg.strip().upper()
-                assert len(iso_code.split("-")) == 2
-            elif "," in arg:  # reverse geocode comma delimited
-                coordinates = arg.split(",")
-                x, y = map(float, coordinates)
-
-            elif " " in arg:  # reverse geocode space delimited
-                while "  " in arg:
-                    arg = arg.replace("  ", " ")
-                coordinates = arg.split(" ")
-                x, y = map(float, coordinates)
-            else:
-                assert False
-
-        elif len(args) == 2:  # reverse geocode
-            x = float(args[0].strip(","))
-            y = float(args[1].strip(","))
-
-        else:
-            assert False
-
-    except (AssertionError, ValueError):
-        click.echo(
-            "Invalid input: Please provide either a valid ISO 3166-2 code "
-            "or a comma/space-separated longitude/latitude pair.",
-            err=True,
-        )
+    if len(args) == 0:
         return
 
-    if iso_code:
-        # click.echo(f"Geocoding: {iso_code}")
+    # Check if input is an ISO 3166-2 code (e.g. US-CA, SG-01, GB-LND)
+    if len(args) == 1 and re.fullmatch(r"[A-Za-z]{2}-[A-Za-z0-9]{1,3}", args[0].strip()):
         from ._core import geocode
 
+        iso_code = args[0].strip().upper()
         result = geocode(iso_code)
         _handle_result(result, output, overwrite, to_json, indent)
-
         return
 
-    elif x and y:
-        # click.echo(f"Reverse geocoding: x={x}, y={y}")
+    # Attempt to parse as coordinates
+    coords = parse_coordinates(*args)
+    if coords is not None:
         from ._core import reverse_geocode
 
+        x, y = coords
         result = reverse_geocode(x, y, to_json)
         _handle_result(result, output, overwrite, to_json, indent)
-
         return
+
+    click.echo(
+        "Invalid input: Please provide either a valid ISO 3166-2 code "
+        "or a supported coordinate format.",
+        err=True,
+    )
+    return
 
 
 if __name__ == "__main__":

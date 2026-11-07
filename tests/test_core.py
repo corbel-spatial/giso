@@ -50,6 +50,17 @@ def test_reverse_geocode(g: giso.Giso) -> None:
     assert g.reverse_geocode(0, 0) is None
     assert giso.reverse_geocode(0, 0) is None
 
+    # String & format detection
+    assert g.reverse_geocode(37.8245529, -122.2483823) == "US-CA"
+    assert giso.reverse_geocode(37.8245529, -122.2483823) == "US-CA"
+    assert g.reverse_geocode("37.824553N 122.248383W") == "US-CA"
+    assert giso.reverse_geocode("37.824553N 122.248383W") == "US-CA"
+    assert giso.reverse_geocode("10SEG6614786615") == "US-CA"
+    assert giso.reverse_geocode("10S 566147 4186615") == "US-CA"
+    assert giso.reverse_geocode((-122.2483823, 37.8245529)) == "US-CA"
+    assert giso.reverse_geocode("-122.2483823", "37.8245529") == "US-CA"
+    assert giso.reverse_geocode("invalid string") is None
+
 
 def test_reverse_geocode_verbose(g: giso.Giso) -> None:
     r1 = g.reverse_geocode(-122.2483823, 37.8245529, True)
