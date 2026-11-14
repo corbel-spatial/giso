@@ -17,15 +17,15 @@ conda-forge = { mapping = { sedonadb = "sedonadb" } }  # TODO missing win-64 whe
 [environments.dev.dependencies]
 python = ">=3.15.2,<3.16"
 geoarrow-types = ">=0.4.1,<0.5"
-hypothesis = ">=6.170.11,<7"
-pandas-stubs = ">=3.0.5.260914,<4"
+hypothesis = ">=6.170.15,<7"
+pandas-stubs = ">=3.1.0.261029,<4"
 pixi-pycharm = ">=0.0.12,<0.0.13"
-pytest = ">=9.1.1,<10"
+pytest = ">=9.2.0,<10"
 pytest-cov = ">=7.1.0,<8"
-ruff = ">=0.17.2,<0.18"
+ruff = ">=0.17.5,<0.18"
 scipy-stubs = ">=1.18.1.1,<2"
-ty = ">=0.0.92,<0.0.93"
-types-geopandas = ">=1.1.4.20261006,<2"
+ty = ">=0.0.104,<0.0.105"
+types-geopandas = ">=1.2.0.20261107,<2"
 types-shapely = ">=2.1.0.20260402,<3"
 
 [environments.dev.tasks]
@@ -36,6 +36,6 @@ lint = { depends-on = ["lint-ruff", "lint-ty"] }
 test = { cmd = "pytest ./tests", depends-on = ["lint"] }
 
 [environments.docs]
-dependencies = { jupyter = ">=1.1.1,<2", myst-parser = ">=5.1.0,<6", nbsphinx = ">=0.9.8,<0.10", notebook = ">=7.6.3,<8", pydata-sphinx-theme = ">=0.23.0,<0.24", sphinx = ">=9.2.0,<10", sphinx-copybutton = ">=0.5.2,<0.6" }
+dependencies = { jupyter = ">=1.1.1,<2", myst-parser = ">=5.2.0,<6", nbsphinx = ">=0.9.8,<0.10", notebook = ">=7.6.5,<8", pydata-sphinx-theme = ">=0.24.0,<0.25", sphinx = ">=9.2.0,<10", sphinx-copybutton = ">=0.5.2,<0.6" }
 tasks = { docs = "./docs/make html" }
 target = { win-64 = { tasks = { docs = "./docs/make.bat html" } } }

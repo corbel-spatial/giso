@@ -3,8 +3,8 @@ channels = ["conda-forge"]
 platforms = ["linux-64", "osx-64", "win-64"]
 
 [dependencies]
-hypothesis = ">=6.170.11,<7"
-pytest = ">=9.1.1,<10"
+hypothesis = ">=6.170.15,<7"
+pytest = ">=9.2.0,<10"
 
 geoarrow-pyarrow = ">=0.3.0,<0.4"
 geopandas = ">=1.2.0,<2"
